@@ -1,25 +1,38 @@
 <?php
-	
-	include "database_controller.php";
-	include "email_controller.php";
-	include "../include/EncryptionHelper.php";
-	
-	
+require_once "database_controller.php";
+require_once "email_controller.php";
+require_once "../include/EncryptionHelper.php";
 
-	function insertData($email, $firstname, $lastname, $notes){
-		$connection = new DatabaseController();
-		$guid = getGUID();
-		$connection->insertData(array($guid, $email, $firstname, $lastname, $notes));
-		
-		$sendemail = new EmailController($firstname, $lastname, $email, $guid);
+function insertData($email, $firstname, $lastname, $notes){
+	$connection = new DatabaseController();
+	$guid = getGUID();
+	$connection->insertData(array($guid, $email, $firstname, $lastname, $notes));
 
+	$sendemail = new EmailController($firstname, $lastname, $email, $guid);
+}
+
+function selectData(){
+	$connection = new DatabaseController();
+	$result = $connection->selectData();
+	return $result;
+}
+
+function getGUID(){
+	if (function_exists('com_create_guid')){
+		return com_create_guid();
+	}else{
+		mt_srand((double)microtime()*10000);//optional for php 4.2.0 and up.
+		$charid = strtoupper(md5(uniqid(rand(), true)));
+		$hyphen = chr(45);// "-"
+		$uuid = chr(123)// "{"
+		.substr($charid, 0, 8).$hyphen
+		.substr($charid, 8, 4).$hyphen
+		.substr($charid,12, 4).$hyphen
+		.substr($charid,16, 4).$hyphen
+		.substr($charid,20,12)
+		.chr(125);// "}"
+		return $uuid;
 	}
-
-	function selectData(){
-		$connection = new DatabaseController();
-		$result = $connection->selectData();
-		return $result;
-	}
-
+}
 
 ?>

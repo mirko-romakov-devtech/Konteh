@@ -72,7 +72,6 @@ class EncryptionHelper {
 		$lsModelString = $this->encrypt($lsModelString);
 			
 		return $lsModelString;
-			
 	}
 
 	private function encrypt($asString) {
@@ -80,8 +79,6 @@ class EncryptionHelper {
 	}
 
 	private function decrypt($asEncrypted) {
-		//OBRISATI SLEDECU LINIJU:
-		$this->isEncryptionKey = '';
 		return rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($this->isEncryptionKey), base64_decode($asEncrypted), MCRYPT_MODE_CBC, md5(md5($this->isEncryptionKey))), "\0");
 	}
 

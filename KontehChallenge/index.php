@@ -36,7 +36,6 @@ if ($guid == false){
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 <script type="text/javascript" src="turn/jquery-ui.min.js"></script>
-
 <script type="text/javascript" src="turn/turn.js"></script>
 <link rel="stylesheet" type="text/css" href="turn/turn.css">
 <link rel="stylesheet" type="text/css" href="css/main.css">
@@ -53,8 +52,6 @@ function getCredentials(guid){
 		}
 		else
 			console.log("Something went wrong!");
-		
-		
 	});
 }
 
