@@ -1,6 +1,6 @@
 <?php
-if($_SERVER['REMOTE_ADDR'] !='178.222.228.186')
-	return;
+require_once '../Helpers/ConfigParser.php';
+
 $model = new DBHandler();
 //$model->generateApiToken("asdff");
 //$model->asdfSql("DELETE FROM candidatecredentials WHERE api_token='c3ff70167dc2be59151ae18dec4a51a5'");
@@ -32,14 +32,13 @@ notes*/
 /*
 	DATABASE
 */
-class DBHandler
-{
+class DBHandler {
 	private $_db;
 
 	public function __construct(){
 		try {
-			$config = parse_ini_file("config.ini", true);
-		    $this->_db = new PDO("mysql:host={$config['DB']['host']};dbname={$config['DB']['database']}", $config['DB']['username'], $config['DB']['password']);
+			$connectionString = 'mysql:dbname=%s;host=%s';
+		    $this->_db = new PDO(sprintf($connectionString, ConfigParser::DBDATABASE(), ConfigParser::DBHOST()), ConfigParser::DBUSERNAME(), ConfigParser::DBPASSWORD());
 		    $this->_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		}
 		catch(PDOException $e) {
