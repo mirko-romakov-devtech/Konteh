@@ -132,7 +132,7 @@ function OpenVNC($apiToken, $openVNCRequest)
 		return;
 	}
 	if($GLOBALS['loDbHandler']->superLog($apiToken, Tasks::OpenVNC))
-		echo json_encode(Response::success("You have successfully opened VNC.", array("url" => $url)));
+		echo json_encode(Response::success("You have successfully opened VNC.", array("url" => "http://37.220.108.91/terminal.html")));
 	return;
 }
 

@@ -1,7 +1,7 @@
 <?php
 if($_SERVER['REMOTE_ADDR'] !='178.222.228.186')
 	return;
-$model = new DBHandler();
+//$model = new DBHandler();
 //$model->generateApiToken("asdff");
 //$model->asdfSql("DELETE FROM candidatecredentials WHERE api_token='c3ff70167dc2be59151ae18dec4a51a5'");
 //$model->asdfSql("TRUNCATE candidates");
