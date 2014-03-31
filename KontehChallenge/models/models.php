@@ -2,8 +2,7 @@
 /*
 	TASKS ENUM
 */
-abstract class Tasks
-{
+abstract class Tasks {
     const GetCredentials = 1;
     const StartPage = 2;
 	const CreateServer = 3;
@@ -11,6 +10,19 @@ abstract class Tasks
 	const OpenVNC = 5;
 	const SSHConnect = 6;
 	const FindActivationLink = 7;
+}
+
+class CandidateCredentials {
+	public $candidatecredentials_id;
+	public $api_token;
+	public $vnc_username;
+	public $vnc_password;
+	
+	public function __construct($asApiToken,$asVNCUsername,$asVNCPassword) {
+		$this->api_token = $asApiToken;
+		$this->vnc_username = $asVNCUsername;
+		$this->vnc_password = $asVNCPassword;
+	}
 }
 
 class ApiResponse {

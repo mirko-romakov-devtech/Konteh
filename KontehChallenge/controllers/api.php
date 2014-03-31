@@ -183,12 +183,13 @@ function checkVNCRequest($vncRequest)
 		return false;
 	}   
 	
-	$serverID = 5;
-	$user = 'robert';
-	$pass = 'r0bert';
-	if($vncRequest['serverID'] != $serverID || $vncRequest['username'] != $user || $vncRequest['password'] != $pass)
+	$credentials = new CandidateCredentials($token, $vncRequest['username'], $vncRequest['password']);
+	
+	$response = $GLOBALS['loDbHandler']->checkVNCCredentials($credentials);
+
+	if(!$response->success)
 	{
-		echo json_encode(Response::error("VNC request data you provided is not valid."));
+		echo json_encode($response);
 		return false;
 	}
 	return true;

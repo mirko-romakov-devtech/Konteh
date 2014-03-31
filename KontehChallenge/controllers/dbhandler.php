@@ -132,6 +132,16 @@ class DBHandler
 		return Response::error("Customer name could not be generated at the moment.");
 	}
 	
+	public function checkVNCCredentials($asCredentials){
+		$sql = "SELECT * FROM candidatecredentials WHERE api_token = ? AND vnc_username = ? AND vnc_password = ?";
+		$lsQuery = $this->_db->prepare($sql);
+		$count = $lsQuery->execute(array($asCredentials->api_token, $asCredentials->vnc_username, $asCredentials->vnc_password));
+		if($count>0){
+			return Response::success("Credentials are valid.");
+		}
+		return Response::error("Credentials you provided are not valid.");
+	}
+	
 	public function superLog($apiToken,$task){
 		$sql = "INSERT into progresslog (candidate_id,timestamp,task_id,ip) VALUES (?, ?, ?, ?)";
 		$guid = $this->getGuidFromToken($apiToken);
