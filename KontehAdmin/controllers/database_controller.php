@@ -12,7 +12,7 @@ class DatabaseController{
 	}
 
 	public function insertData($params){
-		$sql = "INSERT INTO `".DB_TABLE."` (candidate_id, email, firstname, lastname, notes) VALUES (?, ?, ?, ?, ?)";
+		$sql = "INSERT INTO `candidates` (candidate_id, email, firstname, lastname, notes) VALUES (?, ?, ?, ?, ?)";
 		$statement = $this->databaseHandler->prepare($sql);
 		$statement->execute($params);
 	}
