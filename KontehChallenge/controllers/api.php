@@ -1,5 +1,5 @@
 <?php
-include 'models.php';
+require_once 'models.php';
 
 /*
 	INFORM USER TO PASS DATA AS JSON
@@ -12,14 +12,12 @@ if(count($_REQUEST)>0 || !$data){
 if($_SERVER['REMOTE_ADDR'] !='178.222.228.186')
 	return;
 	
-
-include 'dbhandler.php';
+require_once 'dbhandler.php';
 
 /*
 	NO ACTION? BYE
 */
-if(!isset($data['action']))
-{
+if(!isset($data['action'])) {
 	echo json_encode(Response::error("You must provide an action."));
 	return;
 }
