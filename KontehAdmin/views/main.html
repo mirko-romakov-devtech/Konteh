@@ -1,0 +1,74 @@
+<div id="main">
+					<div class="sub-main">
+						<img src='images/devtech.jpg' id='logo'/>
+						<button class="btn btn-primary" id="logout_button">Logout</button>
+						<button class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="add-new-button">Add new</button>
+						<div style="clear: both;"></div>
+						<div class="table-div">
+							<table class="table table-striped mytable" id="myTable">
+								
+
+							</table>
+						</div>
+					</div>
+				</div>
+
+				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      				<div class="modal-dialog">
+        				<div class="modal-content">
+          					<div class="modal-header">
+            					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            					<h4 class="modal-title" id="myModalLabel">Add new candidate</h4>
+          					</div>
+          					<div class="modal-body">
+          						<!-- ADD NEW COMPETITOR -->
+
+          						<form class="form-horizontal">
+
+									<!-- email address -->
+							        <div class="form-group">
+							          <label for="email" class="col-sm-2 control-label">E-mail</label>
+							          <div class="col-sm-10">
+							          		 <input type="email" id="email" name="email" class="form-control" required/>
+							          </div>
+							        </div>
+          							<!-- fist name -->
+          							<div class="form-group">
+							          <label for="firstname" class="col-sm-2 control-label">First Name</label>
+							          <div class="col-sm-10">
+							          		<input type="text" id="firstname" name="firstname" class="form-control" required/>
+							          </div>
+							        </div>
+
+							        <!-- last name -->
+          							<div class="form-group">
+							          <label for="lastname" class="col-sm-2 control-label">Last Name</label>
+							          <div class="col-sm-10">
+							          		<input type="text" id="lastname" name="lastname" class="form-control" required/>
+							          </div>
+							        </div>
+
+							        <!-- notes -->
+							        <div class="form-group">
+							          <label for="notes" class="col-sm-2 control-label">Notes</label>
+							          <div class="col-sm-10">
+							          		<textarea class="form-control" id="notes"></textarea>
+							          </div>
+							        </div>
+
+          						</form>
+
+          					</div>
+          					<div class="modal-footer">
+            					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            					<button type="button" class="btn btn-primary" id="add_new">Add</button>
+          					</div>
+        				</div>
+        			</div>
+        		</div>
+
+        		<script src="views/main.js">
+        			
+
+
+        		</script>

@@ -1,0 +1,16 @@
+class DBHandler
+{
+	private $_db;
+
+	public function __construct(){
+		try {
+			$config = parse_ini_file("config.ini", true);
+		    $this->_db = new PDO("mysql:host={$config['DB']['host']};dbname={$config['DB']['database']}", $config['DB']['username'], $config['DB']['password']);
+		    $this->_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		}
+		catch(PDOException $e) {
+		    //return Response::error("There is a problem with database. Please try again later");
+			echo $e->getMessage();
+		}
+	}
+}
