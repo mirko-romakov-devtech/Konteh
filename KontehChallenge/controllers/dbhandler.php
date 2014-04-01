@@ -1,12 +1,13 @@
 <?php
-if($_SERVER['REMOTE_ADDR'] !='178.222.228.186')
-	return;
+require_once '../Helpers/ConfigParser.php';
+require_once '../Helpers/EncryptionHelper.php';
+
 $model = new DBHandler();
 //$model->generateApiToken("asdff");
 //$model->asdfSql("DELETE FROM candidatecredentials WHERE api_token='c3ff70167dc2be59151ae18dec4a51a5'");
 //$model->asdfSql("TRUNCATE candidates");
 //$model->tranketuj();
-//$model->viewTable("progresslog");
+$model->viewTable("progresslog");
 //$model->asdfSql("show tables");
 //$model->viewTable("candidatecredentials");
 //$model->asdfSql("SELECT firstname,lastname FROM candidates as ca JOIN candidatecredentials as cc on ca.candidate_id=cc.candidate_id WHERE api_token='46a77beb93bd2bfd7b7b8463b5fb071b'");
@@ -32,14 +33,13 @@ notes*/
 /*
 	DATABASE
 */
-class DBHandler
-{
+class DBHandler {
 	private $_db;
 
 	public function __construct(){
 		try {
-			$config = parse_ini_file("config.ini", true);
-		    $this->_db = new PDO("mysql:host={$config['DB']['host']};dbname={$config['DB']['database']}", $config['DB']['username'], $config['DB']['password']);
+			$connectionString = 'mysql:dbname=%s;host=%s';
+		    $this->_db = new PDO(sprintf($connectionString, ConfigParser::DBDATABASE(), ConfigParser::DBHOST()), ConfigParser::DBUSERNAME(), ConfigParser::DBPASSWORD());
 		    $this->_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		}
 		catch(PDOException $e) {
@@ -73,10 +73,7 @@ class DBHandler
 		$lsQuery = $this->_db->prepare($sql);
 		$lsQuery->execute(array($guid));
 		$result = $lsQuery->fetch(PDO::FETCH_ASSOC);
-
-		if($result)
-			return Response::success("Key is valid.");
-		return Response::error("Key you provided is not valid.");
+		return $result!=null ? true : false;
 	}
 			
 	public function generateApiToken($guid) {
@@ -106,9 +103,7 @@ class DBHandler
 		$lsQuery = $this->_db->prepare($sql);
 		$lsQuery->execute(array($guid));
 		$result = $lsQuery->fetchAll(PDO::FETCH_ASSOC);
-		if($result)
-			return true;
-		return false;
+		return $result!=null ? true : false;
 	}
 	
 	public function checkToken($token) {
@@ -116,9 +111,17 @@ class DBHandler
 		$lsQuery = $this->_db->prepare($sql);
 		$lsQuery->execute(array($token));
 		$result = $lsQuery->fetch(PDO::FETCH_ASSOC);
+		return $result!=null ? true : false;
+	}
+	
+	public function checkVNCCredentials($credentials) {
+		$sql = "SELECT * FROM candidatecredentials WHERE api_token=? AND vnc_username=? AND vnc_password=?";
+		$lsQuery = $this->_db->prepare($sql);
+		$lsQuery->execute(array($credentials->api_token, $credentials->vnc_username, $credentials->vnc_password));
+		$result = $lsQuery->fetch(PDO::FETCH_ASSOC);
 		if($result)
-			return Response::success("Token is valid.");
-		return Response::error("Token you provided is not valid.");
+			return Response::success("Credentials are valid");
+		return Response::error("Credentials you provided are not valid.");
 	}
 	
 	public function getCustomerName($apiToken){
@@ -147,15 +150,31 @@ class DBHandler
 		return Response::error("Action cannot be logged at the moment.");
 	}
 	
+	public function validateStep($apiToken,$aiTask) {
+		$guid = $this->getGuidFromToken($apiToken);
+		$task;
+		switch ($aiTask) {
+			case Tasks::CreateServer:
+				$task = Tasks::GetCredentials;
+				break;
+			case Tasks::OpenVNC:
+				$task = Tasks::CreateServer;
+				break;
+		}
+		$sql = "SELECT * FROM progresslog WHERE candidate_id=? AND task_id=?";
+		$lsQuery = $this->_db->prepare($sql);
+		$lsQuery->execute(array($guid,$task));
+		$result = $lsQuery->fetch(PDO::FETCH_ASSOC);
+		return $result==null ? true : false;
+	}
+	
 	public function isItLogged($guid, $task){
 		return false;
 		$sql = "SELECT * FROM progresslog WHERE candidate_id=? AND task_id=?";
 		$lsQuery = $this->_db->prepare($sql);
 		$lsQuery->execute(array($guid,$task));
 		$result = $lsQuery->fetch(PDO::FETCH_ASSOC);
-		if($result)
-			return true;
-		return false;
+		return $result==null ? true : false;
 	}
 	
 	public function getGuidFromToken($apiToken){
@@ -165,6 +184,23 @@ class DBHandler
 		$result = $lsQuery->fetch(PDO::FETCH_ASSOC);
 		if(count($result)>0)
 			return $result['candidate_id'];
+		return false;
+	}
+	
+	public function activationKey($apiToken) {
+		$guid = $this->getGuidFromToken($apiToken);
+		$sql = "SELECT action, used FROM activation WHERE candidate_id=?";
+		$lsQuery = $this->_db->prepare($sql);
+		$lsQuery->execute(array($guid));
+		$result = $lsQuery->fetch(PDO::FETCH_ASSOC);
+		if(count($result)>0) {
+			$aoLink = new LinkModel();
+			$aoLink->Action = $result['action'];
+			$aoLink->Used = $result['used'];
+			$aoLink->GUID = $guid;
+			$encryption = new EncryptionHelper(ConfigParser::DBHOST(), ConfigParser::DBDATABASE(), ConfigParser::DBUSERNAME(), ConfigParser::DBPASSWORD());
+			return $encryption->encryptObject($aoLink);
+		}
 		return false;
 	}
 }

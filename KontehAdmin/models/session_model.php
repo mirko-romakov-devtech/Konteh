@@ -1,8 +1,8 @@
 <?php
 
 class SessionModel{
- const SESSION_CONSTANT = "____________@konteh___________";
- public $Username;
+	const SESSION_CONSTANT = "____________@konteh___________";
+	public $Username;
 }
 
 ?>
