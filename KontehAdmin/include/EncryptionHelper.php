@@ -76,11 +76,11 @@ class EncryptionHelper {
 	}
 
 	private function encrypt($asString) {
-		return base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($isEncryptionKey), $asString, MCRYPT_MODE_CBC, md5(md5($isEncryptionKey))));
+		return base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($this->isEncryptionKey), $asString, MCRYPT_MODE_CBC, md5(md5($this->isEncryptionKey))));
 	}
 
 	private function decrypt($asEncrypted) {
-		return rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($isEncryptionKey), base64_decode($asEncrypted), MCRYPT_MODE_CBC, md5(md5($isEncryptionKey))), "\0");
+		return rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($this->$isEncryptionKey), base64_decode($asEncrypted), MCRYPT_MODE_CBC, md5(md5($this->isEncryptionKey))), "\0");
 	}
 
 	private function getEncryptionKey() {

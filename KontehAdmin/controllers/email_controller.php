@@ -37,7 +37,7 @@ class EmailController {
 		$encryptionObject = new EncryptionHelper(DB_HOST, DB_NAME, DB_USER, DB_PASS);
 		
 		$encryptionLink = $encryptionObject->encryptObject($linkModel);
-		$fullyEncyptedLink = base64_encode("http://challenge.devtechgroup.com/index.php?key=" . $encryptionLink);
+		$fullyEncyptedLink = base64_encode("http://challenge.devtechgroup.com/index.php?key=" . urlencode($encryptionLink));
 		
 		$this->mail->addAddress($email_address, $first_name." ".$last_name);  // Add a recipient
 
