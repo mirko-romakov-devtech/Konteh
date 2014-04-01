@@ -137,7 +137,7 @@ function OpenVNC($apiToken, $openVNCRequest)
 			//echo json_encode(Response::error("You have already openned VNC."));
 			//return;
 		}
-		$key = md5("coor-china".time());
+		$key = $GLOBALS['loDbHandler']->activationKey($apiToken);
 		if($GLOBALS['loDbHandler']->superLog($apiToken, Tasks::OpenVNC))
 			echo json_encode(Response::success("You have successfully opened VNC.", array("url" => "http://37.220.108.91/terminal.php?key=".$key)));
 		else
