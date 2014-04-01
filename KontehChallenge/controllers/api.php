@@ -101,7 +101,7 @@ function CreateServer($apiToken,$createServerRequest)
 			echo json_encode(Response::error("Something went wrong. Please try again."));
 	}
 	else 
-		echo json_encode("Token you provided is not valid.");
+		echo json_encode(Response::error("Token you provided is not valid."));
 }
 
 function OpenVNC($apiToken, $openVNCRequest)
