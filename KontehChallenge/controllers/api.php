@@ -7,8 +7,8 @@ require_once 'models.php';
 /*
 	INFORM USER TO PASS DATA AS JSON
 */
-$data = json_decode(file_get_contents('php://input'), true);
-if(count($_REQUEST)>0 || !$data){
+$data = json_decode($_POST['data'], true);
+if(!$data) {
 	echo json_encode(Response::error("You must pass your data as JSON"));
 	return;
 }
@@ -27,7 +27,7 @@ $GLOBALS['loDbHandler'] = new DBHandler();
 
 switch($data['action']){
 	case "getCredentials" :
-		GetCredentials($data['key']);
+		GetCredentials($data['guid']);
 		break;
 	case "createServer" :
 		CreateServer($data['token'],$data['dataObject']);
@@ -116,7 +116,7 @@ function OpenVNC($apiToken, $openVNCRequest)
 			echo json_encode(Response::error("You must first create server."));
 			return;
 		}
-		if(!checkVNCRequest($openVNCRequest))
+		if(!checkVNCRequest($openVNCRequest, $apiToken))
 			return;
 		$data = array('guid' => $GLOBALS['loDbHandler']->getGuidFromToken($apiToken), 'supersecretkey' => '01470a4f4b9897959bc5baf5c08cd5e2');
 	
@@ -178,7 +178,7 @@ function checkToken($token) {
 	return $GLOBALS['loDbHandler']->checkToken($token);
 }
 
-function checkVNCRequest($vncRequest)
+function checkVNCRequest($vncRequest, $token)
 {
 	if(!isset($vncRequest['serverID']) || !isset($vncRequest['username']) || !isset($vncRequest['password']))
 	{
