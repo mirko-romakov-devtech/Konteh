@@ -1,5 +1,6 @@
 <?php
 require_once '../Helpers/ConfigParser.php';
+require_once '../Helpers/EncryptionHelper.php';
 
 $model = new DBHandler();
 //$model->generateApiToken("asdff");
@@ -183,6 +184,23 @@ class DBHandler {
 		$result = $lsQuery->fetch(PDO::FETCH_ASSOC);
 		if(count($result)>0)
 			return $result['candidate_id'];
+		return false;
+	}
+	
+	public function activationKey($apiToken) {
+		$guid = $this->getGuidFromToken($apiToken);
+		$sql = "SELECT action, used FROM activation WHERE candidate_id=?";
+		$lsQuery = $this->_db->prepare($sql);
+		$lsQuery->execute(array($guid));
+		$result = $lsQuery->fetch(PDO::FETCH_ASSOC);
+		if(count($result)>0) {
+			$aoLink = new LinkModel();
+			$aoLink->Action = $result['action'];
+			$aoLink->Used = $result['used'];
+			$aoLink->GUID = $guid;
+			$encryption = new EncryptionHelper(ConfigParser::DBHOST(), ConfigParser::DBDATABASE(), ConfigParser::DBUSERNAME(), ConfigParser::DBPASSWORD());
+			return $encryption->encryptObject($aoLink);
+		}
 		return false;
 	}
 }
