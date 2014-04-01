@@ -8,7 +8,12 @@
 	class EmailController{
 
 
-		public function __construct($first_name, $last_name, $email_address, $guid){
+		public function __construct($data){
+			
+				$guid = $data[0];
+				$email_address = $data[1];
+				$first_name = $data[2];
+				$last_name = $data[3];
 				
 				$linkModel = new LinkModel();
 				$linkModel->GUID = $guid;
@@ -27,8 +32,8 @@
 				$mail->Username = '';                            // SMTP username
 				$mail->Password = ''; 
 
-				$mail->From = 'mirko.simanic@devtechgroup.com';
-				$mail->FromName = 'Mirko';
+				$mail->From = SENDER_EMAIL;
+				$mail->FromName = SENDER_NAME;
 				$mail->addAddress($email_address, $first_name." ".$last_name);  // Add a recipient
 
 				$mail->WordWrap = 50;                                 // Set word wrap to 50 characters
@@ -36,7 +41,7 @@
 				//$mail->addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
 				$mail->isHTML(true);                                  // Set email format to HTML
 
-				$mail->Subject = 'Welcome to the Konteh';
+				$mail->Subject = EMAIL_SUBJECT;
 				$mail->Body    = 	"Dear ".$first_name." ".$last_name.", <br/><br/> Welcome to the Konteh <br/><br/>
 									To start please click at the following link: <br/> 
 									<a target='_blank' href='http://challenge.devtechgroup.com/index.php?key=".$encryptionLink."'>http://challenge.devtechgroup.com/index.php?key=".$encryptionLink."</a><br/>

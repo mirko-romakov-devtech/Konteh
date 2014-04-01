@@ -1,0 +1,5 @@
+Options All -Indexes
+<files  applet.conf>
+  order allow,deny
+  deny from all
+</files>

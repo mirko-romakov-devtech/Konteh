@@ -23,7 +23,7 @@
 	top: 10px;
 }
 #main{
-	width: 800px;
+	width: 900px;
 	height: 700px;
 	position: absolute;
 	border: 1px solid lightgray;
@@ -49,7 +49,7 @@
 	top: 20px;
 }
 .table-div{
-	width: 750px;
+	width: 850px;
 	height: 610px;
 	margin-top: 15px;
 	margin-left: 25px;

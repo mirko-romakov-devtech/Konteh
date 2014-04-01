@@ -36,7 +36,6 @@ font-size:14pt;
 </head>
 <body>
 
-
 <div id="mainContainer">
 <img src="images/logo.png" width="170" /><br /><br />
 <div id="message">
