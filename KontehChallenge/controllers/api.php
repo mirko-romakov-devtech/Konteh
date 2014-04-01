@@ -120,7 +120,7 @@ function OpenVNC($apiToken, $openVNCRequest)
 			return;
 		$data = array('guid' => $GLOBALS['loDbHandler']->getGuidFromToken($apiToken), 'supersecretkey' => '01470a4f4b9897959bc5baf5c08cd5e2');
 	
-		$url = 'http://37.220.108.91/index.php';
+		$url = 'http://37.220.108.91/api.php';
 	
 		// Get cURL resource
 		$curl = curl_init();
