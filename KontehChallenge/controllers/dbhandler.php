@@ -60,7 +60,7 @@ class DBHandler {
 		$lsQuery = $this->_db->prepare($sql);
 		$lsQuery->execute();
 		$laUserList = $lsQuery->fetchAll(PDO::FETCH_ASSOC);
-		print_r($laUserList);
+		//print_r($laUserList);
 	}
 	
 	//TESTING

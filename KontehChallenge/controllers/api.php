@@ -158,11 +158,12 @@ function SendEmail($params){
 	{
 		//sent mail function
 		$emailParams = array($candidateParams['guid'], $candidateParams['email'], $candidateParams['firstname'], $candidateParams['lastname']);
-		$mail = new EmailController($emailParams);
-		
+		$mail = new EmailController();
+		$mail->send($emailParams);
+		echo json_encode(Response::success("You have finished Challenge successfully. Congratulation!", $emailParams));
 	}
 	else
-	 return Response::error("Your email is not valid!");
+	 	echo json_encode(Response::error("Your email is not valid!"));
 }
 
 /*
