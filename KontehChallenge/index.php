@@ -8,21 +8,17 @@ require_once 'EncryptionHelper.php';
 
 $encriptor = new EncryptionHelper(ConfigParser::DBHOST(), ConfigParser::DBDATABASE(), ConfigParser::DBUSERNAME(), ConfigParser::DBPASSWORD());
 
-
-
 if(isset($_GET["key"])){
 	$key = $_GET["key"];
 	$link_object = $encriptor->decryptObject($key);
+	
 	if($link_object->GUID == null) {
 		header("Location: error.php");
 	}
-
 }
 else{
 	header("Location: error.php");
 }
-
-
 
 ?>
 <html>
