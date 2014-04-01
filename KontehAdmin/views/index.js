@@ -21,7 +21,7 @@ function fillTable(){
 }
 
 function getSession(){
-	$.post("ajax/ajax.php", {action: "getSession", getSession: 1}, function(data){
+	$.post("ajax/ajax.php", {action: "getSession"}, function(data){
 		if(data == 1){
 			$('body').load('views/main.html');
 			fillTable();

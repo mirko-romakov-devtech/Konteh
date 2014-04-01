@@ -1,6 +1,6 @@
 <?php
-require_once '/Helpers/ConfigParser.php';
-require_once '/Helpers/EncryptionHelper.php';
+require_once 'ConfigParser.php';
+require_once 'EncryptionHelper.php';
 
 //$model = new DBHandler();
 //$model->generateApiToken("asdff");
@@ -60,7 +60,7 @@ class DBHandler {
 		$lsQuery = $this->_db->prepare($sql);
 		$lsQuery->execute();
 		$laUserList = $lsQuery->fetchAll(PDO::FETCH_ASSOC);
-		print_r($laUserList);
+		//print_r($laUserList);
 	}
 	
 	//TESTING

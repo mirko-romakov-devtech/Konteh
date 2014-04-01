@@ -1,7 +1,6 @@
 <?php
-error_reporting(0);
 session_start();
-require_once "/models/session_model.php";
+require_once "session_model.php";
 
 function getSession(){
 	$result = "";
@@ -22,7 +21,8 @@ function login($user, $pass){
 }
 
 function logout(){
-	session_destroy();
+	unset($_SESSION[SessionModel::SESSION_CONSTANT]);
+	//session_destroy();
 }
 
 ?>

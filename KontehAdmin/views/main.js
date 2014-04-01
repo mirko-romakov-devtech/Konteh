@@ -12,10 +12,10 @@ function isValidEmailAddress(emailAddress) {
 };
 
 $('#logout_button').click(function(){
-	$.post("ajax/ajax.php", {action: "logout", logout: 1}, function(data){
+	$.post("ajax/ajax.php", {action: "logout"}, function(data){
 		getSession();
+		location.reload();
 	});
-	window.location = "index.html";
 });
 
 $('#add_new').click(function(){

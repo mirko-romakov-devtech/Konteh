@@ -1,16 +1,17 @@
 <?php
+$directories = array('../controllers', '../Helpers', '../models', get_include_path());
+set_include_path(implode(PATH_SEPARATOR, $directories));
+
 require_once 'models.php';
 
 /*
 	INFORM USER TO PASS DATA AS JSON
 */
-$data = json_decode(file_get_contents('php://input'), true);
-if(count($_REQUEST)>0 || !$data){
+$data = json_decode($_POST['data'], true);
+if(!$data) {
 	echo json_encode(Response::error("You must pass your data as JSON"));
 	return;
 }
-if($_SERVER['REMOTE_ADDR'] !='178.222.228.186')
-	return;
 	
 require_once 'dbhandler.php';
 
@@ -26,7 +27,7 @@ $GLOBALS['loDbHandler'] = new DBHandler();
 
 switch($data['action']){
 	case "getCredentials" :
-		GetCredentials($data['key']);
+		GetCredentials($data['guid']);
 		break;
 	case "createServer" :
 		CreateServer($data['token'],$data['dataObject']);
@@ -100,7 +101,7 @@ function CreateServer($apiToken,$createServerRequest)
 			echo json_encode(Response::error("Something went wrong. Please try again."));
 	}
 	else 
-		echo json_encode("Token you provided is not valid.");
+		echo json_encode(Response::error("Token you provided is not valid."));
 }
 
 function OpenVNC($apiToken, $openVNCRequest)
@@ -115,11 +116,11 @@ function OpenVNC($apiToken, $openVNCRequest)
 			echo json_encode(Response::error("You must first create server."));
 			return;
 		}
-		if(!checkVNCRequest($openVNCRequest))
+		if(!checkVNCRequest($openVNCRequest, $apiToken))
 			return;
 		$data = array('guid' => $GLOBALS['loDbHandler']->getGuidFromToken($apiToken), 'supersecretkey' => '01470a4f4b9897959bc5baf5c08cd5e2');
 	
-		$url = 'http://37.220.108.91/index.php';
+		$url = 'http://37.220.108.91/api.php';
 	
 		// Get cURL resource
 		$curl = curl_init();
@@ -157,11 +158,12 @@ function SendEmail($params){
 	{
 		//sent mail function
 		$emailParams = array($candidateParams['guid'], $candidateParams['email'], $candidateParams['firstname'], $candidateParams['lastname']);
-		$mail = new EmailController($emailParams);
-		
+		$mail = new EmailController();
+		$mail->send($emailParams);
+		echo json_encode(Response::success("You have finished Challenge successfully. Congratulation!", $emailParams));
 	}
 	else
-	 return Response::error("Your email is not valid!");
+	 	echo json_encode(Response::error("Your email is not valid!"));
 }
 
 /*
@@ -176,7 +178,7 @@ function checkToken($token) {
 	return $GLOBALS['loDbHandler']->checkToken($token);
 }
 
-function checkVNCRequest($vncRequest)
+function checkVNCRequest($vncRequest, $token)
 {
 	if(!isset($vncRequest['serverID']) || !isset($vncRequest['username']) || !isset($vncRequest['password']))
 	{

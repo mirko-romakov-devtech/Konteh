@@ -1,44 +1,44 @@
 <?php
-	error_reporting();
-	require_once "/controllers/login_controller.php";
-	require_once "/controllers/home_controller.php";
+// error_reporting(E_ALL);
+// ini_set('display_errors', 1);
 
-	$username = $_POST['username'];
-	$password = $_POST['password'];
-	$action = $_POST['action'];
+$directories = array('../controllers', '../include', '../models', '../PHPMailer', get_include_path());
+set_include_path(implode(PATH_SEPARATOR, $directories));
 
-	$dataArray = $_POST['dataObject'];
-	$dataArray = array_values($dataArray);	
+require_once "login_controller.php";
+require_once "home_controller.php";
 
-	switch ($action) {
-		case 'getSession':
-			echo getSession();
-			break;
+$username = $_POST['username'];
+$password = $_POST['password'];
+$action = $_POST['action'];
 
-		case 'login':
-			login($username, $password);
-			break;
+$dataArray = $_POST['dataObject'];
+$dataArray = array_values($dataArray);
 
-		case 'logout':
-			logout();
-			break;
-		
-		case 'insertData':
-			insertData($dataArray);
-			break;
+switch ($action) {
+	case 'getSession':
+		echo getSession();
+		break;
 
-		case 'selectData':
-			print_r(json_encode(selectData()));
-			break;
+	case 'login':
+		login($username, $password);
+		break;
 
-		default:
-			echo "nothing";
-			break;
-	}
+	case 'logout':
+		logout();
+		break;
 
+	case 'insertData':
+		insertData($dataArray);
+		break;
 
-	//$data = "mirko";
-	//insertData(11145, $data, $data, $data, $data);
+	case 'selectData':
+		print_r(json_encode(selectData()));
+		break;
 
+	default:
+		echo "Invalid action provided.";
+		break;
+}
 
 ?>
