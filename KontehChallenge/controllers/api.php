@@ -1,5 +1,8 @@
 <?php
-require_once '../models/models.php';
+$directories = array('../controllers', '../Helpers', '../models', get_include_path());
+set_include_path(implode(PATH_SEPARATOR, $directories));
+
+require_once 'models.php';
 
 /*
 	INFORM USER TO PASS DATA AS JSON
