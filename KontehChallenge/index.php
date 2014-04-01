@@ -4,7 +4,8 @@ require_once 'controllers/dbhandler.php';
 require_once 'Helpers/EncryptionHelper.php';
 
 $encriptor = new EncryptionHelper(ConfigParser::DBHOST(), ConfigParser::DBDATABASE(), ConfigParser::DBUSERNAME(), ConfigParser::DBPASSWORD());
-//var_dump($encriptor);
+
+
 
 if(isset($_GET["key"])){
 	$key = $_GET["key"];
@@ -18,20 +19,6 @@ else{
 	header("Location: error.php");
 }
 
-
-/*
-function decodeKey($key){
-	if ($key == "12345")
-		$guid = "12345";
-	else
-		$guid = false;
-		
-	return $guid;
-}*/
-/*
-if ($guid == false){
-	header("Location: error.php");
-}*/
 
 
 ?>
@@ -71,7 +58,7 @@ function getCredentials(guid){
 	
 	<div class="col-md-offset-3" id="guidDetails">
 		<h3>Your guid:</h3>
-		<h4><?php echo $link_object->GUID?></h4>
+		<h4><?php /*echo $link_object->GUID*/ ?></h4>
 	</div>
 	
 	<div class="col-md-offset-3" id="instructions">
@@ -92,9 +79,42 @@ function getCredentials(guid){
 
 	<div class="col-md-offset-3" id="instructions">
 		<h3>Download:</h3>
-		<div id="documentation"><a href="#" target="_blank"><span class="glyphicon glyphicon-download-alt"></span> documentation</a></div>
+		<div id="documentation"><a href="APIDoc.pdf" ><span class="glyphicon glyphicon-download-alt"></span> documentation</a></div>
 	</div>
 
+	<div class="col-md-6 col-md-offset-3" id="troubleDiv">
+		<a href="#troubleShooting" data-toggle="collapse" >Troubleshooting <span class="glyphicon glyphicon-chevron-down"></span></a>
+		<div  id="troubleShooting" class="collapse well">
+			<p>In order to successfully complete the challenge, you will need to access newly created server by VNC through java applet. Browsers by default don’t allow applets to run (they require explicit permission).  If your browser doesn’t allow applet to run, you will need to lower java security levels.</p>
+
+		<p>Enter Java control panel (C:\Program Files (x86)\Java\jre7\bin\javacpl.exe)
+		In security tab lower security level to medium. 
+		Reopen the browser</p>
+		</div>
+		
+	</div>
+	
+	<!--  
+	<div class="col-md-6 col-md-offset-3 panel-group">
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<div class="panel-title">
+					<a href="#troubleShooting" data-toggle="collapse" >Troubleshooting</a>
+				</div>
+			</div>
+			<div  id="troubleShooting" class="panel-collapse collapse">
+				<div class="panel-body">
+				<p>In order to successfully complete the challenge, you will need to access newly created server by VNC through java applet. Browsers by default don’t allow applets to run (they require explicit permission).  If your browser doesn’t allow applet to run, you will need to lower java security levels.</p>
+	
+			<p>Enter Java control panel (C:\Program Files (x86)\Java\jre7\bin\javacpl.exe)
+			In security tab lower security level to medium. 
+			Reopen the browser</p>
+			</div>
+			</div>
+			
+		</div>
+	</div>
+-->
 </div>
 
 
