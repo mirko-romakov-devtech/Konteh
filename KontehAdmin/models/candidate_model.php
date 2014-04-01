@@ -2,11 +2,12 @@
 
 	class Candidate{
 
-		public $candidate_guid;
+		public $candidate_id;
 		public $email;
 		public $firstname;
 		public $lastname;
 		public $notes;
+		public $task;
 
 }
 
