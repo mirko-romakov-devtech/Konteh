@@ -1,7 +1,7 @@
 <?php
 
 	//define constants
-
+/*
  	define("DB_HOST", "localhost");
  	define("DB_USER", "root");
 	define("DB_PASS", "");
@@ -12,7 +12,7 @@
 	define("SENDER_NAME", "Devtech - Konteh");
 	define("EMAIL_SUBJECT", "Welcome to the Konteh");
 	
-	/*
+	*/
 	define("DB_HOST", "37.220.108.88");
 	define("DB_USER", "konteh_admin");
 	define("DB_PASS", "h9ZjL8Y(Kbwm>-P");
@@ -22,7 +22,7 @@
 	define("SENDER_EMAIL", "mirko.simanic@devtechgroup.com");
 	define("SENDER_NAME", "Devtech - Konteh");
 	define("EMAIL_SUBJECT", "Welcome to the Konteh");
-	*/
+	
 	
 	
 ?>
