@@ -1,7 +1,35 @@
+<?php
+require_once 'Helpers/ConfigParser.php';
+require_once 'controllers/dbhandler.php';
+require_once 'Helpers/EncryptionHelper.php'; 
 
+$encriptor = new EncryptionHelper(ConfigParser::DBHOST(), ConfigParser::DBDATABASE(), ConfigParser::DBUSERNAME(), ConfigParser::DBPASSWORD());
+//var_dump($encriptor);
+
+if(isset($_GET["key"])){
+	$key = $_GET["key"];
+	$link_object = $encriptor->decryptObject($key);
+	if($link_object->GUID == null) {
+		header("Location: error.php");
+		
+	}
+	else {
+		$usedKey = $model->isKeyUsed($link_object->GUID);
+		if($usedKey)
+			header("Location: error.php");
+	}
+	
+	
+}
+else{
+	header("Location: error.php");
+}
+
+
+?>
 <html>
 <head>
-<title>KONTEH - error</title>
+<title>KONTEH - success!</title>
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
@@ -9,7 +37,7 @@
 
 <style>
 body{
-overflow:hidden
+overflow:hidden;
 }
 #message{
 padding:10px;
@@ -29,7 +57,7 @@ box-shadow:         6px -7px 13px 0px rgba(50, 196, 237, 0.6);
 -webkit-border-radius: 15px;
 -moz-border-radius: 15px;
 border-radius: 15px;
-font-size:14pt
+font-size:14pt;
 }
 </style>
 

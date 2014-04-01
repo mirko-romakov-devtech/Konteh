@@ -77,7 +77,7 @@ class DBHandler {
 			return Response::success("Key is valid.");
 		return Response::error("Key you provided is not valid.");
 	}
-			
+	
 	public function generateApiToken($guid) {
 		if($this->tokenExists($guid))
 		{
@@ -165,6 +165,30 @@ class DBHandler {
 		if(count($result)>0)
 			return $result['candidate_id'];
 		return false;
+	}
+	
+
+	public function isKeyUsed($guid){
+		$keyUsed = false;
+		$sql = "SELECT used FROM konteh.activation WHERE candidate_id = ? AND action = ?";
+		$lsQuery = $this->_db->prepare($sql);
+		$lsQuery->execute(array($guid, LinkAction::ACTIVATION));
+		$result = $lsQuery->fetchAll(PDO::FETCH_ASSOC);
+		if(count($result)>0)
+			$keyUsed = $result[0]['used'];
+		return $keyUsed;
+	
+	}
+	
+	public function checkEmail($guid){
+		$sql = "SELECT email FROM candidates WHERE candidate_id = ? ";
+		$lsQuery = $this->_db->prepare($sql);
+		$lsQuery->execute(array($guid));
+		$result = $lsQuery->fetch(PDO::FETCH_ASSOC);
+		if(count($result)>0)
+			return $result['email'];
+		return false;
+	
 	}
 }
 

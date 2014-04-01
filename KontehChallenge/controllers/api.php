@@ -34,6 +34,8 @@ switch($data['action']){
 	case "openVNCConnection" :
 		OpenVNC($data['token'], $data['dataObject']);
 		break;
+	case "sendEmail":
+		SendEmail($data['params']);
 	default :
 		echo json_encode(Response::error("You must provide a valid action."));
 		return;
@@ -132,6 +134,10 @@ function OpenVNC($apiToken, $openVNCRequest)
 	if($GLOBALS['loDbHandler']->superLog($apiToken, Tasks::OpenVNC))
 		echo json_encode(Response::success("You have successfully opened VNC.", array("url" => $url)));
 	return;
+}
+
+function SendEmail($params){
+	
 }
 
 /*
