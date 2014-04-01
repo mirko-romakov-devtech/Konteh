@@ -95,14 +95,16 @@ $('#finishBtn').on("click", function(e){
 	});
 	
 	console.log(parameters);
-	/*$.post('controllers/api.php', {action:"sendEmail", params: parameters}, function(response){
-		//var data = JSON.parse(response);
+	$.post('controllers/api.php', {action:"sendEmail", params: parameters}, function(response){
+		var data = JSON.parse(response);
+
+		//response:
+		$('#formContainer').remove();
+		$('#mainContainer').css({'width':'400', 'margin-left':'-200'});
+		$('#message').css('color','green').text("You have successfully comleted f****** everything!");
 		
-	});*/
-	//response:
-	$('#formContainer').remove();
-	$('#mainContainer').css({'width':'400', 'margin-left':'-200'});
-	$('#message').css('color','green').text("You have successfully comleted f****** everything!");
+	});
+	
 })
 
 var platno = $("<canvas id='body'></canvas>");

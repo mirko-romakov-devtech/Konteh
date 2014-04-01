@@ -149,8 +149,19 @@ function OpenVNC($apiToken, $openVNCRequest)
 		echo json_encode(Response::error("Token you provided is not valid."));
 }
 
+
 function SendEmail($params){
 	
+	$candidateParams = $GLOBALS['loDbHandler']->checkEmail($params['guid']);
+	if($params['email'] == $candidateParams['email'])
+	{
+		//sent mail function
+		$emailParams = array($candidateParams['guid'], $candidateParams['email'], $candidateParams['firstname'], $candidateParams['lastname']);
+		$mail = new EmailController($emailParams);
+		
+	}
+	else
+	 return Response::error("Your email is not valid!");
 }
 
 /*

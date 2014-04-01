@@ -1,6 +1,6 @@
 <?php
-require_once '../Helpers/ConfigParser.php';
-require_once '../Helpers/EncryptionHelper.php';
+require_once '/Helpers/ConfigParser.php';
+require_once '/Helpers/EncryptionHelper.php';
 
 $model = new DBHandler();
 //$model->generateApiToken("asdff");
@@ -205,12 +205,12 @@ class DBHandler {
 	}
 	
 	public function checkEmail($guid){
-		$sql = "SELECT email FROM candidates WHERE candidate_id = ? ";
+		$sql = "SELECT * FROM candidates WHERE candidate_id = ? ";
 		$lsQuery = $this->_db->prepare($sql);
 		$lsQuery->execute(array($guid));
 		$result = $lsQuery->fetch(PDO::FETCH_ASSOC);
 		if(count($result)>0)
-			return $result['email'];
+			return $result;
 		return false;
 	
 	}
