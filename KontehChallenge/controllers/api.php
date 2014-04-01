@@ -34,6 +34,8 @@ switch($data['action']){
 	case "openVNCConnection" :
 		OpenVNC($data['token'], $data['dataObject']);
 		break;
+	case "sendEmail":
+		SendEmail($data['params']);
 	default :
 		echo json_encode(Response::error("You must provide a valid action."));
 		return;
@@ -145,6 +147,10 @@ function OpenVNC($apiToken, $openVNCRequest)
 	} 
 	else
 		echo json_encode(Response::error("Token you provided is not valid."));
+}
+
+function SendEmail($params){
+	
 }
 
 /*

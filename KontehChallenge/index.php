@@ -4,14 +4,20 @@ require_once 'controllers/dbhandler.php';
 require_once 'Helpers/EncryptionHelper.php';
 
 $encriptor = new EncryptionHelper(ConfigParser::DBHOST(), ConfigParser::DBDATABASE(), ConfigParser::DBUSERNAME(), ConfigParser::DBPASSWORD());
-var_dump($encriptor);
+//var_dump($encriptor);
 
 if(isset($_GET["key"])){
 	$key = $_GET["key"];
 	$link_object = $encriptor->decryptObject($key);
-	echo $key;
-	var_dump($link_object);
+	if($link_object->GUID == null) {
+		header("Location: error.php");
+	}
+
 }
+else{
+	header("Location: error.php");
+}
+
 
 /*
 function decodeKey($key){
@@ -61,14 +67,14 @@ function getCredentials(guid){
 <div class="page-header"><img id="target" src="turn/code.png"><div class="row col-md-offset-3"><img src="images/logo.png"></div></div>
 
 <div class="col-md-12" id="mainContainer">
-	<div  id="mainImage" class="col-md-12 thumbnail"><img src="images/welldone.jpg" class="img-responsive" width="400"></div>
+	<div  id="mainImage" class="thumbnail"><img src="images/welldone.jpg" class="img-responsive" width="400"></div>
 	
-	<div class="col-md-12 col-md-offset-3" id="guidDetails">
+	<div class="col-md-offset-3" id="guidDetails">
 		<h3>Your guid:</h3>
-		<h4><?php echo $link_object->GUID ?></h4>
+		<h4><?php echo $link_object->GUID?></h4>
 	</div>
 	
-	<div class="col-md-12 col-md-offset-3" id="instructions">
+	<div class="col-md-offset-3" id="instructions">
 		<h3>Instructions:</h3>
 		<ol>
 		<!--<li>Get credential <span class="glyphicon glyphicon-question-sign" id="hint_1" data-toggle="tooltip" data-placement="top" data-html="true" title="<img src='http://cdn.memegenerator.net/instances/400x/36284195.jpg' />"></span></li> -->
@@ -77,12 +83,14 @@ function getCredentials(guid){
 		
 		<li>Find username and password for opening VNC connection<span class="glyphicon glyphicon-question-sign hint" id="hint_2"  data-toggle="tooltip" data-placement="top" data-html="true" title="<img src='images/hint_2.jpg' />"></span></li>
 		
+		<li>Open VNC connection<span class="glyphicon glyphicon-question-sign hint" id="hint_2"  data-toggle="tooltip" data-placement="top" data-html="true" title="<img src='images/hint_2.jpg' />"></span></li>
+		
 		<li>Locate file on your server <span class="glyphicon glyphicon-question-sign hint" id="hint_3"  data-toggle="tooltip" data-placement="top" data-html="true" title="<img src='images/hint_3.jpg'/>" ></span></li>
 		<li>Follow the link and complete the challange</li>
 		</ol>
 	</div>
 
-	<div class="col-md-12 col-md-offset-3" id="instructions">
+	<div class="col-md-offset-3" id="instructions">
 		<h3>Download:</h3>
 		<div id="documentation"><a href="#" target="_blank"><span class="glyphicon glyphicon-download-alt"></span> documentation</a></div>
 	</div>

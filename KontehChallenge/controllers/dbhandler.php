@@ -203,6 +203,17 @@ class DBHandler {
 		}
 		return false;
 	}
+	
+	public function checkEmail($guid){
+		$sql = "SELECT email FROM candidates WHERE candidate_id = ? ";
+		$lsQuery = $this->_db->prepare($sql);
+		$lsQuery->execute(array($guid));
+		$result = $lsQuery->fetch(PDO::FETCH_ASSOC);
+		if(count($result)>0)
+			return $result['email'];
+		return false;
+	
+	}
 }
 
 ?>
