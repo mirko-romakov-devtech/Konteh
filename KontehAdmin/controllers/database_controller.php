@@ -19,7 +19,7 @@ class DatabaseController{
 
 	public function selectData(){
 		$result = "";
-		$query = $this->databaseHandler->query("select * from `".DB_TABLE."`");
+		$query = $this->databaseHandler->query("select * from `candidates`");
 		$query->setFetchMode(PDO::FETCH_CLASS, 'Candidate');
         $result = $query->fetchAll();
         return $result;

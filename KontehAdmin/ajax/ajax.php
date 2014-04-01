@@ -7,11 +7,8 @@
 	$password = $_POST['password'];
 	$action = $_POST['action'];
 
-	$email = $_POST['email'];
-	$firstname = $_POST['firstname'];
-	$lastname = $_POST['lastname'];
-	$notes = $_POST['notes'];
-
+	$dataArray = $_POST['dataObject'];
+	$dataArray = array_values($dataArray);	
 
 	switch ($action) {
 		case 'getSession':
@@ -27,7 +24,7 @@
 			break;
 		
 		case 'insertData':
-			insertData($email, $firstname, $lastname, $notes);
+			insertData($dataArray);
 			break;
 
 		case 'selectData':

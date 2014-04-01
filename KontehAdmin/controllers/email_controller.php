@@ -2,13 +2,18 @@
 	error_reporting(0);
 	require '../PHPMailer/PHPMailerAutoload.php';
 	require '../PHPMailer/class.phpmailer.php';
-	include "../include/EncryptionHelper.php";
+	//include "../include/EncryptionHelper.php";
 	require_once("../include/config.php");
 
 	class EmailController{
 
 
-		public function __construct($first_name, $last_name, $email_address, $guid){
+		public function __construct($data){
+			
+				$guid = $data[0];
+				$email_address = $data[1];
+				$first_name = $data[2];
+				$last_name = $data[3];
 				
 				$linkModel = new LinkModel();
 				$linkModel->GUID = $guid;

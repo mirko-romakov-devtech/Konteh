@@ -33,7 +33,10 @@ $('#add_new').click(function(){
 			alert("Email address must be in proper format");
 		}
 		else{
-			$.post("ajax/ajax.php", {action: "insertData", email: email, firstname: firstname, lastname: lastname, notes: notes}, function(data){
+			
+			dataObject = {email: email, firstname: firstname, lastname: lastname, notes: notes};
+			
+			$.post("ajax/ajax.php", {action: "insertData", dataObject: dataObject}, function(data){
 				alert("You have successfully added new candidate");
 				$('#myModal').modal('hide');
 				$("#guid").val("");
