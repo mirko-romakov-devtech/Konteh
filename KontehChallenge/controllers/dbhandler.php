@@ -1,6 +1,6 @@
 <?php
-require_once '/Helpers/ConfigParser.php';
-require_once '/Helpers/EncryptionHelper.php';
+require_once '../Helpers/ConfigParser.php';
+require_once '../Helpers/EncryptionHelper.php';
 
 //$model = new DBHandler();
 //$model->generateApiToken("asdff");
