@@ -1,7 +1,6 @@
 <?php
-
-include("../models/candidate_model.php");
-require_once("../include/config.php");
+require_once "candidate_model.php";
+require_once "config.php";
 
 class DatabaseController{
 

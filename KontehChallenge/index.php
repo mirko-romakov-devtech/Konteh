@@ -1,7 +1,10 @@
 <?php
-require_once 'Helpers/ConfigParser.php';
-require_once 'controllers/dbhandler.php';
-require_once 'Helpers/EncryptionHelper.php';
+$directories = array('controllers', 'Helpers', 'models', get_include_path());
+set_include_path(implode(PATH_SEPARATOR, $directories));
+
+require_once 'ConfigParser.php';
+require_once 'dbhandler.php';
+require_once 'EncryptionHelper.php';
 
 $encriptor = new EncryptionHelper(ConfigParser::DBHOST(), ConfigParser::DBDATABASE(), ConfigParser::DBUSERNAME(), ConfigParser::DBPASSWORD());
 

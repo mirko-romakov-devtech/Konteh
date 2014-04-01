@@ -1,5 +1,5 @@
 <?php
-require_once 'models.php';
+require_once '../models/models.php';
 
 /*
 	INFORM USER TO PASS DATA AS JSON
@@ -9,8 +9,6 @@ if(count($_REQUEST)>0 || !$data){
 	echo json_encode(Response::error("You must pass your data as JSON"));
 	return;
 }
-if($_SERVER['REMOTE_ADDR'] !='178.222.228.186')
-	return;
 	
 require_once 'dbhandler.php';
 

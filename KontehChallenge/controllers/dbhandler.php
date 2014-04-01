@@ -1,13 +1,13 @@
 <?php
-require_once '/Helpers/ConfigParser.php';
-require_once '/Helpers/EncryptionHelper.php';
+require_once '../Helpers/ConfigParser.php';
+require_once '../Helpers/EncryptionHelper.php';
 
-$model = new DBHandler();
+//$model = new DBHandler();
 //$model->generateApiToken("asdff");
 //$model->asdfSql("DELETE FROM candidatecredentials WHERE api_token='c3ff70167dc2be59151ae18dec4a51a5'");
 //$model->asdfSql("TRUNCATE candidates");
 //$model->tranketuj();
-$model->viewTable("progresslog");
+//$model->viewTable("progresslog");
 //$model->asdfSql("show tables");
 //$model->viewTable("candidatecredentials");
 //$model->asdfSql("SELECT firstname,lastname FROM candidates as ca JOIN candidatecredentials as cc on ca.candidate_id=cc.candidate_id WHERE api_token='46a77beb93bd2bfd7b7b8463b5fb071b'");
