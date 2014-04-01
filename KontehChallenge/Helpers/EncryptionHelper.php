@@ -2,6 +2,7 @@
 class LinkAction {
 	const INITIAL = 0;
 	const ACTIVATION = 1;
+	const OPENVNC = 2;
 }
 
 class LinkModel {
