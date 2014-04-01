@@ -1,7 +1,7 @@
 <?php
 error_reporting(0);
 session_start();
-include "../models/session_model.php";
+require_once "/models/session_model.php";
 
 function getSession(){
 	$result = "";

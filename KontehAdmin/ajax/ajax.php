@@ -1,7 +1,7 @@
 <?php
 	error_reporting();
-	include "../controllers/login_controller.php";
-	include "../controllers/home_controller.php";
+	require_once "/controllers/login_controller.php";
+	require_once "/controllers/home_controller.php";
 
 	$username = $_POST['username'];
 	$password = $_POST['password'];

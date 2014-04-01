@@ -1,9 +1,9 @@
 <?php
 	error_reporting(0);
-	require '../PHPMailer/PHPMailerAutoload.php';
-	require '../PHPMailer/class.phpmailer.php';
+	require_once '/PHPMailer/PHPMailerAutoload.php';
+	require_once '/PHPMailer/class.phpmailer.php';
 	//include "../include/EncryptionHelper.php";
-	require_once("../include/config.php");
+	require_once("/include/config.php");
 
 	class EmailController{
 
