@@ -29,7 +29,8 @@
 
 		$connection->insertData($dataArray);
 		
-		$sendemail = new EmailController($dataArray);
+		$sendemail = new EmailController();
+		$sendemail->send($dataArray);
 
 	}
 
