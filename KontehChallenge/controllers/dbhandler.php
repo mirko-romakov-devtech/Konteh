@@ -245,6 +245,22 @@ class DBHandler {
 		return $response;
 	}
 	
+	public function setActivationVisited($guid) {
+		$response = new ApiResponse();
+		try {
+			$query = "UPDATE activation SET used = ? WHERE candidate_id = ? AND action = ?";
+			$statement = $this->_db->prepare($query);
+			$statement->execute(array(1, $guid, LinkAction::ACTIVATION));
+			if ($statement->rowCount() == 0) {
+				throw new Exception("Error while updating activation link: ".$this->_db->errorInfo());
+			}
+			$response = Response::success("Bravo!");
+		} catch (Exception $ex) {
+			$response = Response::error($ex->getMessage());
+		}
+		return $response;
+	}
+	
 	public function isActivationVisited($guid) {
 		$response = new ApiResponse();
 		$response->data = false;

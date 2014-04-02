@@ -41,7 +41,7 @@ try {
         $kobaja = $encryptor->encryptObject($linkModel);
 
         $dbHandler = DatabaseHandler::WithDefaultConfig();
-        $dbHandler->insertActivation($linkModel, $kobaja);
+        $dbHandler->insertActivation($linkModel, urlencode($kobaja));
 
         $name = $path.$guid."/victory.txt";
         $handle = fopen($name, "w");

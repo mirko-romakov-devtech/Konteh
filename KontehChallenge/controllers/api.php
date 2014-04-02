@@ -200,7 +200,9 @@ function SendEmail($params){
 		$response = curl_exec($curl);
 		curl_close($curl);
 		
-		//echo json_encode(Response::success("You have finished Challenge successfully. Congratulation!", $emailParams));
+		$GLOBALS['loDbHandler']->setActivationVisited(base64_decode($params['guid']));
+		
+		echo json_encode(Response::success("You have finished Challenge successfully. Congratulations!"));
 	} else {
 	 	echo json_encode(Response::error("Your email is not valid!"));
 	}

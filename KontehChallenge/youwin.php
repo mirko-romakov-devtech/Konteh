@@ -11,18 +11,19 @@ $encriptor = new EncryptionHelper(ConfigParser::DBHOST(), ConfigParser::DBDATABA
 if(isset($_GET["key"])){
 	$key = $_GET["key"];
 	$link_object = $encriptor->decryptObject($key);
+
 	if($link_object->GUID == null) {
 		header("Location: error.php");
 	} else {
 		$dbHandler = new DBHandler();
 		if ($dbHandler->isActivationVisited($link_object->GUID)->data) {
-			header("Location: error.php");
+			header("Location: error.php?code=".Errors::ActivationUsed);
 		}
 		$base64Guid = base64_encode($link_object->GUID);
 	}
 }
 else{
-	header("Location: error.php");
+	header("Location: error.php?code=".Errors::KeyNotFound);
 }
 ?>
 <html>

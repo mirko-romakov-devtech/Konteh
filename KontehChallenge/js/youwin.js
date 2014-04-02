@@ -1,6 +1,7 @@
 
 $('#finishBtn').on("click", function(e){
 	e.preventDefault();
+	$("#finishBtn").attr("disabled", true);
 	var parameters = {};
 	$(".form-control").each(function(){
 		var id = $(this).attr("id");
@@ -23,7 +24,9 @@ $('#finishBtn').on("click", function(e){
 		$('#mainContainer').css({'width':'400', 'margin-left':'-200'});
 		//$('#message').css('color','green').text("You have successfully comleted f****** everything!");
 		//$('#message').css('color','green').text(data.message);
-		$('#message').css('color','green').html(response);
+		if (data.success) {
+			$('#message').css('color','green').html(data.message);
+		}
 		
 	});
 	//response:
