@@ -7,28 +7,22 @@ require_once 'controllers/dbhandler.php';
 require_once 'Helpers/EncryptionHelper.php'; 
 
 $encriptor = new EncryptionHelper(ConfigParser::DBHOST(), ConfigParser::DBDATABASE(), ConfigParser::DBUSERNAME(), ConfigParser::DBPASSWORD());
-//var_dump($encriptor);
 
 if(isset($_GET["key"])){
 	$key = $_GET["key"];
 	$link_object = $encriptor->decryptObject($key);
 	if($link_object->GUID == null) {
-		//header("Location: error.php");
-		
+		header("Location: error.php");
 	}
 	else {
 		$usedKey = $model->isKeyUsed($link_object->GUID);
-		//if($usedKey)
-			//header("Location: error.php");
+		if($usedKey)
+			header("Location: error.php");
 	}
-	
-	
 }
 else{
-	//header("Location: error.php");
+	header("Location: error.php");
 }
-
-$guid = "{9FD4E880-D545-53D6-B507-19A21C7CF694}";
 ?>
 
 <html>
