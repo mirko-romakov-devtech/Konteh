@@ -185,10 +185,17 @@ function SendEmail($params){
 		//sent mail function
 		
 		
-		$emailParams = array($candidateParams['candidate_id'], $candidateParams['email'], $candidateParams['firstname'], $candidateParams['lastname']);
-
-		$curl = curl_init();
+		//$emailParams = array($candidateParams['candidate_id'], $candidateParams['email'], $candidateParams['firstname'], $candidateParams['lastname'], $params['favorite'], $params['feedback']);
+		$emailParams = array(
+				'firstname' => $candidateParams['firstname'],
+				'lastname' => $candidateParams['lastname'],
+				'email' => $candidateParams['email'],
+				'favorite' => $params['favorite'],
+				'feedback' => $params['feedback']);
+		
 		$data = array('action' => 'sendEmail', 'emailData' => $emailParams);
+		
+		$curl = curl_init();
 				
 		curl_setopt_array($curl, array(
 		CURLOPT_RETURNTRANSFER => 1,
