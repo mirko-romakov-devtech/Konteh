@@ -72,7 +72,7 @@ function getCredentials(guid){
 		<div class="col-md-offset-3" id="guidDetails">
 			<h3>Your guid:</h3>
 			<h4>
-				<?php echo $link_object->GUID; ?>
+				"<?php echo $link_object->GUID; ?>"
 			</h4>
 		</div>
 
