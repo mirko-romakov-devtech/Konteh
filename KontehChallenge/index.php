@@ -72,7 +72,9 @@ function getCredentials(guid){
 		<div class="col-md-offset-3" id="guidDetails">
 			<h3>Your guid:</h3>
 			<h4>
-				"<?php echo $link_object->GUID; ?>"
+				"
+				<?php echo $link_object->GUID; ?>
+				"
 			</h4>
 		</div>
 
@@ -86,25 +88,25 @@ function getCredentials(guid){
 				<li>Create Server<span
 					class="glyphicon glyphicon-question-sign hint" id="hint_2"
 					data-toggle="tooltip" data-placement="top" data-html="true"
-					title="<img   src='images/hint_2.jpg' />"></span>
+					title="<img     src='images/hint_2.jpg' />"></span>
 				</li>
 
 				<li>Find username and password for opening VNC connection<span
-					class="glyphicon glyphicon-question-sign hint" id="hint_2"
-					data-toggle="tooltip" data-placement="top" data-html="true"
-					title="<img   src='images/hint_2.jpg' />"></span>
+					class="glyphicon glyphicon-question-sign hint" id="hint_3"
+					data-toggle="tooltip" data-placement="top"
+					title="Call store procedure getVNCCredentials, and pass your guid as argument"></span>
 				</li>
 
 				<li>Open VNC connection<span
 					class="glyphicon glyphicon-question-sign hint" id="hint_2"
 					data-toggle="tooltip" data-placement="top" data-html="true"
-					title="<img   src='images/hint_2.jpg' />"></span>
+					title="<img     src='images/hint_2.jpg' />"></span>
 				</li>
 
 				<li>Locate file on your server <span
 					class="glyphicon glyphicon-question-sign hint" id="hint_3"
 					data-toggle="tooltip" data-placement="top" data-html="true"
-					title="<img   src='images/hint_3.jpg' />" ></span>
+					title="<img     src='images/hint_3.jpg' />" ></span>
 				</li>
 				<li>Follow the link and complete the challange</li>
 			</ol>
