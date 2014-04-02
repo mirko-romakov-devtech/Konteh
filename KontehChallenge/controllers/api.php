@@ -170,13 +170,28 @@ function GetVersion($apiToken) {
 function SendEmail($params){
 	
 	$candidateParams = $GLOBALS['loDbHandler']->checkEmail($params['guid']);
+
+	
 	if($params['email'] == $candidateParams['email'])
 	{
 		//sent mail function
-		$emailParams = array($candidateParams['guid'], $candidateParams['email'], $candidateParams['firstname'], $candidateParams['lastname']);
-		$mail = new EmailController();
-		$mail->send($emailParams);
-		echo json_encode(Response::success("You have finished Challenge successfully. Congratulation!", $emailParams));
+		
+		
+		$emailParams = array($candidateParams['candidate_id'], $candidateParams['email'], $candidateParams['firstname'], $candidateParams['lastname']);
+
+		$curl = curl_init();
+		$data = array('action' => 'sendEmail', 'emailData' => $emailParams);
+				
+		curl_setopt_array($curl, array(
+		CURLOPT_RETURNTRANSFER => 1,
+		CURLOPT_URL => "http://challengeadmin.devtechgroup.com/ajax/ajax.php",
+		CURLOPT_POST => 1,
+		CURLOPT_POSTFIELDS => $data
+		));
+		$response = curl_exec($curl);
+		curl_close($curl);
+		
+		//echo json_encode(Response::success("You have finished Challenge successfully. Congratulation!", $emailParams));
 	}
 	else
 	 	echo json_encode(Response::error("Your email is not valid!"));

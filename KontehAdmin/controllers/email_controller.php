@@ -10,8 +10,7 @@ class EmailController {
 	 */
 	private $mail;
 
-	public function __construct(){
-
+	public function __construct(){	
 		$this->mail = new PHPMailer;
 		$this->mail->isSMTP();                                      // Set mailer to use SMTP
 		$this->mail->Host = SMTP_IP;
@@ -21,6 +20,21 @@ class EmailController {
 		$this->mail->Password = '';
 		$this->mail->From = SENDER_EMAIL;
 		$this->mail->FromName = SENDER_NAME;
+	}
+	
+	public function sendSuccessMail($data) {
+		//$data['feedback'] $data['favouriteTask']
+		$this->mail->From = $data['email'];
+		$this->mail->FromName = $data['firstname']." ".$data['lastname'];
+		$this->mail->addAddress("challenge@devtechgroup.com");
+		$this->mail->isHTML(true);
+		$this->mail->Subject = "Developer challenge feedback";
+		$this->mail->Body = "";
+		
+		if(!$this->mail->send()) {
+			echo 'Message could not be sent.';
+			echo 'Mailer Error: ' . $mail->ErrorInfo;
+		}
 	}
 
 	public function send($data){
@@ -60,13 +74,10 @@ class EmailController {
 								";
 		$this->mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
-		var_dump("before sending");
 		if(!$this->mail->send()) {
 			echo 'Message could not be sent.';
 			echo 'Mailer Error: ' . $mail->ErrorInfo;
 		}
-		var_dump("after sending");
-
 	}
 
 
