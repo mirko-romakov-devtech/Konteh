@@ -26,10 +26,13 @@ class EmailController {
 		//$data['feedback'] $data['favouriteTask']
 		$this->mail->From = $data['email'];
 		$this->mail->FromName = $data['firstname']." ".$data['lastname'];
-		$this->mail->addAddress("challenge@devtechgroup.com");
+		$this->mail->addAddress("mario.kozomora@devtechgroup.com");
 		$this->mail->isHTML(true);
 		$this->mail->Subject = "Developer challenge feedback";
-		$this->mail->Body = "";
+		$this->mail->Body = "Candidate: ".$data['firstname']." ".$data['lastname']." <br/><br/> 
+							Favorite task: " .$data['favorite']. "<br/>
+							Feedback: " .$data['feedback']. "<br/><br/>
+				";
 		
 		if(!$this->mail->send()) {
 			echo 'Message could not be sent.';

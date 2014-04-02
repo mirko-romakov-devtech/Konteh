@@ -46,7 +46,8 @@ switch ($action) {
 
 function sendEmail($emailData) {
 	$email = new EmailController();
-	$email->mail->Host = $emailData;
+	//$email->mail->Host = $emailData;
+	$email->sendSuccessMail($emailData);
 }
 
 ?>
