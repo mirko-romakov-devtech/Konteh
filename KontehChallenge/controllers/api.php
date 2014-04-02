@@ -1,4 +1,6 @@
 <?php
+header('Access-Control-Allow-Origin: *');
+
 $directories = array('../controllers', '../Helpers', '../models', get_include_path());
 set_include_path(implode(PATH_SEPARATOR, $directories));
 
