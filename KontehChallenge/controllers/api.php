@@ -176,16 +176,9 @@ function GetVersion($apiToken) {
 
 
 function SendEmail($params){
+	$candidateParams = $GLOBALS['loDbHandler']->checkEmail(base64_decode($params['guid']));
 	
-	$candidateParams = $GLOBALS['loDbHandler']->checkEmail($params['guid']);
-
-	
-	if($params['email'] == $candidateParams['email'])
-	{
-		//sent mail function
-		
-		
-		//$emailParams = array($candidateParams['candidate_id'], $candidateParams['email'], $candidateParams['firstname'], $candidateParams['lastname'], $params['favorite'], $params['feedback']);
+	if($params['email'] == $candidateParams['email']) {
 		$emailParams = array(
 				'firstname' => $candidateParams['firstname'],
 				'lastname' => $candidateParams['lastname'],
@@ -207,9 +200,9 @@ function SendEmail($params){
 		curl_close($curl);
 		
 		//echo json_encode(Response::success("You have finished Challenge successfully. Congratulation!", $emailParams));
-	}
-	else
+	} else {
 	 	echo json_encode(Response::error("Your email is not valid!"));
+	}
 }
 
 /*

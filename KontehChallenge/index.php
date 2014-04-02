@@ -12,7 +12,6 @@ $encriptor = new EncryptionHelper(ConfigParser::DBHOST(), ConfigParser::DBDATABA
 if(isset($_GET["key"])) {
 	$key = $_GET["key"];
 	$link_object = $encriptor->decryptObject($key);
-	
 	if($link_object->GUID == null) {
 		header("Location: error.php");
 	} else {
@@ -65,7 +64,7 @@ function getCredentials(guid){
 		</div>
 	</div>
 
-	<div class="col-md-12" id="mainContainer">
+	<div class="col-md-12" id="">
 		<div id="mainImage" class="thumbnail">
 			<img src="images/welldone.jpg" class="img-responsive" width="400">
 		</div>
@@ -73,7 +72,7 @@ function getCredentials(guid){
 		<div class="col-md-offset-3" id="guidDetails">
 			<h3>Your guid:</h3>
 			<h4>
-				<?php echo $link_object->GUID ?>
+				<?php echo $link_object->GUID; ?>
 			</h4>
 		</div>
 

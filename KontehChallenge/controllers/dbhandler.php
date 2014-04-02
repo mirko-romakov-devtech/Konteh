@@ -1,6 +1,7 @@
 <?php
 require_once 'ConfigParser.php';
 require_once 'EncryptionHelper.php';
+require_once 'models.php';
 
 //$model = new DBHandler();
 //$model->generateApiToken("asdff");
@@ -238,6 +239,23 @@ class DBHandler {
 				throw new Exception("Couldn't log encrypted value to database: ".$this->_db->errorInfo());
 			}
 			$response = Response::success("Encrypted value successfully logged.");
+		} catch (Exception $ex) {
+			$response = Response::error($ex->getMessage());
+		}
+		return $response;
+	}
+	
+	public function isActivationVisited($guid) {
+		$response = new ApiResponse();
+		$response->data = false;
+		try {
+			$query = "SELECT * FROM activation WHERE candidate_id = ? AND action = ? AND used = ?;";
+			$statement = $this->_db->prepare($query);
+			$statement->execute(array($guid, LinkAction::ACTIVATION, 1));
+			if ($statement->rowCount() > 0) {
+				$response = Response::success("", true);
+				$response->data = true;
+			}
 		} catch (Exception $ex) {
 			$response = Response::error($ex->getMessage());
 		}
