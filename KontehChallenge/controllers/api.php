@@ -37,6 +37,10 @@ switch($data['action']){
 		break;
 	case "sendEmail":
 		SendEmail($data['params']);
+		break;
+	case "getVersion":
+		GetVersion($data['token']);
+		break;
 	default :
 		echo json_encode(Response::error("You must provide a valid action."));
 		return;
@@ -148,6 +152,18 @@ function OpenVNC($apiToken, $openVNCRequest)
 	} 
 	else
 		echo json_encode(Response::error("Token you provided is not valid."));
+}
+
+function GetVersion($apiToken) {
+	$responseObject = new ApiResponse();
+	if (checkToken($apiToken)) {
+		$apiDetails = (object) array("name"=>"Devtech challenge","version"=>"1.0");
+		$responseObject->data = $apiDetails;
+	} else {
+		$responseObject->success = false;
+		$responseObject->message = "Invalid token";
+	}
+	echo json_encode($responseObject);
 }
 
 
