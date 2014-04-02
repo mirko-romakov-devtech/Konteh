@@ -17,8 +17,7 @@ if(isset($_GET["key"])) {
 		header("Location: error.php");
 	} else {
 		$dbHandler = new DBHandler();
-		var_dump($key." ".Tasks::StartPage);
-		$dbHandler->logProgress($key, Tasks::StartPage);
+		$dbHandler->logProgress($link_object->GUID, Tasks::StartPage);
 	}
 }
 else{
