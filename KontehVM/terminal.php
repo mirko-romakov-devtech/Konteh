@@ -19,10 +19,10 @@
 
 
 		$a = $loEncHelper->decryptObject($asAuthKey);
-		$a->GUID = 14;
 
 		$b = $loDBHelper->getCandidateVNCDetails($a->GUID);
 		if($_POST['username'] == $b['vnc_username'] and $_POST['password'] == $b['vnc_password']){
+			$loDBHelper->logProgress($a->GUID, Tasks::SSHConnect);
 			echo '<html>
 					  <body>
 					    <applet CODEBASE="."

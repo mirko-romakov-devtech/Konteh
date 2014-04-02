@@ -47,7 +47,7 @@ class DBHandler {
 			echo $e->getMessage();
 		}
 	}
-	
+
 	private function tokenExists($guid) {
 		$sql = "SELECT * FROM candidatecredentials WHERE candidate_id=?";
 		$lsQuery = $this->_db->prepare($sql);
@@ -78,7 +78,7 @@ class DBHandler {
 		$result = $lsQuery->fetch(PDO::FETCH_ASSOC);
 		return $result!=null ? true : false;
 	}
-		
+
 	public function generateApiToken($guid) {
 		if($this->tokenExists($guid))
 		{
@@ -220,7 +220,28 @@ class DBHandler {
 		if(count($result)>0)
 			return $result;
 		return false;
+	}
 
+	public function logKobaja(LinkModel $linkModel, $kobaja) {
+		$query = "INSERT INTO activation (candidate_id, action, encrypted_value, used) VALUES (?, ?, ?, ?)";
+		$response = "";
+		try {
+			$checkStatement = $this->_db->prepare("SELECT * FROM activation WHERE candidate_id = ? AND action = ?");
+			$checkStatement->execute(array($linkModel->GUID, $linkModel->Action));
+			if ($checkStatement->rowCount() > 0) {
+				throw new Exception("Encrypted value already logged");
+			}
+			
+			$statement = $this->_db->prepare($query);
+			$result = $statement->execute(array($linkModel->GUID, $linkModel->Action, $kobaja, $linkModel->Used));
+			if (count($result) <= 0) {
+				throw new Exception("Couldn't log encrypted value to database: ".$this->_db->errorInfo());
+			}
+			$response = Response::success("Encrypted value successfully logged.");
+		} catch (Exception $ex) {
+			$response = Response::error($ex->getMessage());
+		}
+		return $response;
 	}
 }
 

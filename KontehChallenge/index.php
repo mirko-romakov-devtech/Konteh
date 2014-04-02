@@ -9,7 +9,7 @@ require_once 'models.php';
 
 $encriptor = new EncryptionHelper(ConfigParser::DBHOST(), ConfigParser::DBDATABASE(), ConfigParser::DBUSERNAME(), ConfigParser::DBPASSWORD());
 
-if(isset($_GET["key"])){
+if(isset($_GET["key"])) {
 	$key = $_GET["key"];
 	$link_object = $encriptor->decryptObject($key);
 	

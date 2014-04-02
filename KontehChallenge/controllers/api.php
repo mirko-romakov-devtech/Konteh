@@ -106,8 +106,7 @@ function CreateServer($apiToken,$createServerRequest)
 
 function OpenVNC($apiToken, $openVNCRequest)
 {
-	if(!isset($apiToken))
-	{
+	if(!isset($apiToken)) {
 		echo json_encode(Response::error("You must send a token."));
 		return;
 	}
@@ -124,27 +123,34 @@ function OpenVNC($apiToken, $openVNCRequest)
 	
 		// Get cURL resource
 		$curl = curl_init();
-		// Set some options - we are passing in a useragent too here
 		curl_setopt_array($curl, array(
 			CURLOPT_RETURNTRANSFER => 1,
 			CURLOPT_URL => $url,
 			CURLOPT_POST => 1,
 			CURLOPT_POSTFIELDS => $data
 		));
-		// Send the request & save response to $resp
 		$url = curl_exec($curl);
-		// Close request to clear up some resources
 		curl_close($curl);
+		
 		if($url=="LIAR LIAR PANTS ON FIRE!"){
 			//ovo se desava kada je fajl vec kreiran na VM
 			//echo json_encode(Response::error("You have already openned VNC."));
 			//return;
 		}
 		$key = $GLOBALS['loDbHandler']->activationKey($apiToken);
-		if($GLOBALS['loDbHandler']->superLog($apiToken, Tasks::OpenVNC))
+		if($GLOBALS['loDbHandler']->superLog($apiToken, Tasks::OpenVNC)) {
+			$linkModel = new LinkModel();
+			$linkModel->Action = LinkAction::OPENVNC;
+			$linkModel->GUID = $data['guid'];
+			$linkModel->Used = 0;
+			$encryptor = new EncryptionHelper(ConfigParser::DBHOST(), ConfigParser::DBDATABASE(), ConfigParser::DBUSERNAME(), ConfigParser::DBPASSWORD());
+			$kobaja = $encryptor->encryptObject($linkModel);
+			$GLOBALS['loDbHandler']->logKobaja($linkModel, $kobaja);
+			
 			echo json_encode(Response::success("You have successfully opened VNC.", array("url" => "http://37.220.108.91/terminal.php?key=".$key)));
-		else
+		} else {
 			echo json_encode(Response::error("Something went wrong. Please try again."));
+		}
 	} 
 	else
 		echo json_encode(Response::error("Token you provided is not valid."));
