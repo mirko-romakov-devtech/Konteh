@@ -15,59 +15,62 @@ require_once 'EncryptionHelper.php';
 //echo $model->checkToken("c3ff70167dc2be59151ae18dec4a51a5") ? "ima" : "nema";
 //$model->asdfSql("DELETE FROM candidatecredentials WHERE candidate_id=asdf");
 /*email
-firstname
+ firstname
 lastname
 notes*/
 /*foreach($model->_db->query("show databases") as $table) {
-	print_r($table);
-	//echo $table[0];
-	echo '<br><br>';
-	$sql = "DESCRIBE ".$table[0];
-	foreach($model->_db->query($sql) as $row){
-		echo $row['Field'];
-		echo '<br>';
-	}
-	echo '<br><br><br><br>';
+ print_r($table);
+//echo $table[0];
+echo '<br><br>';
+$sql = "DESCRIBE ".$table[0];
+foreach($model->_db->query($sql) as $row){
+echo $row['Field'];
+echo '<br>';
+}
+echo '<br><br><br><br>';
 }*/
 
 /*
-	DATABASE
-*/
+ DATABASE
+ */
 class DBHandler {
 	private $_db;
 
 	public function __construct(){
 		try {
 			$connectionString = 'mysql:dbname=%s;host=%s';
-		    $this->_db = new PDO(sprintf($connectionString, ConfigParser::DBDATABASE(), ConfigParser::DBHOST()), ConfigParser::DBUSERNAME(), ConfigParser::DBPASSWORD());
-		    $this->_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			$this->_db = new PDO(sprintf($connectionString, ConfigParser::DBDATABASE(), ConfigParser::DBHOST()), ConfigParser::DBUSERNAME(), ConfigParser::DBPASSWORD());
+			$this->_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		}
 		catch(PDOException $e) {
-		    //return Response::error("There is a problem with database. Please try again later");
+			//return Response::error("There is a problem with database. Please try again later");
 			echo $e->getMessage();
 		}
 	}
-	//TESTING
-	public function asdfSql($sql){
-		$lsQuery = $this->_db->prepare($sql);
-		$lsQuery->execute();
-		$laUserList = $lsQuery->fetchAll(PDO::FETCH_ASSOC);
-		print_r($laUserList);
-	}
-	//TESTING
-	public function viewTable($table_name){
-		$sql = "SELECT * FROM ".$table_name;
-		$lsQuery = $this->_db->prepare($sql);
-		$lsQuery->execute();
-		$laUserList = $lsQuery->fetchAll(PDO::FETCH_ASSOC);
-		//print_r($laUserList);
-	}
 	
-	//TESTING
-	public function tranketuj(){
-		$this->asdfSql("TRUNCATE progresslog; TRUNCATE candidatecredentials;");
+	private function tokenExists($guid) {
+		$sql = "SELECT * FROM candidatecredentials WHERE candidate_id=?";
+		$lsQuery = $this->_db->prepare($sql);
+		$lsQuery->execute(array($guid));
+		$result = $lsQuery->fetchAll(PDO::FETCH_ASSOC);
+		return $result!=null ? true : false;
 	}
-	
+
+	private function getUserIP() {
+		$client  = @$_SERVER['HTTP_CLIENT_IP'];
+		$forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];
+		$remote  = $_SERVER['REMOTE_ADDR'];
+
+		if(filter_var($client, FILTER_VALIDATE_IP))	{
+			$ip = $client;
+		} elseif(filter_var($forward, FILTER_VALIDATE_IP)) {
+			$ip = $forward;
+		} else {
+			$ip = $remote;
+		}
+		return $ip;
+	}
+
 	public function checkGuid($guid){
 		$sql = "SELECT * FROM candidates WHERE candidate_id=?";
 		$lsQuery = $this->_db->prepare($sql);
@@ -75,7 +78,7 @@ class DBHandler {
 		$result = $lsQuery->fetch(PDO::FETCH_ASSOC);
 		return $result!=null ? true : false;
 	}
-			
+		
 	public function generateApiToken($guid) {
 		if($this->tokenExists($guid))
 		{
@@ -97,15 +100,7 @@ class DBHandler {
 			return Response::success("Token generated!",$apiToken);
 		return Response::error("Token cannot be generated at the moment. Please try again later.");
 	}
-	
-	private function tokenExists($guid) {
-		$sql = "SELECT * FROM candidatecredentials WHERE candidate_id=?";
-		$lsQuery = $this->_db->prepare($sql);
-		$lsQuery->execute(array($guid));
-		$result = $lsQuery->fetchAll(PDO::FETCH_ASSOC);
-		return $result!=null ? true : false;
-	}
-	
+
 	public function checkToken($token) {
 		$sql = "SELECT * FROM candidatecredentials WHERE api_token=?";
 		$lsQuery = $this->_db->prepare($sql);
@@ -113,7 +108,7 @@ class DBHandler {
 		$result = $lsQuery->fetch(PDO::FETCH_ASSOC);
 		return $result!=null ? true : false;
 	}
-	
+
 	public function checkVNCCredentials($credentials) {
 		$sql = "SELECT * FROM candidatecredentials WHERE api_token=? AND vnc_username=? AND vnc_password=?";
 		$lsQuery = $this->_db->prepare($sql);
@@ -123,7 +118,7 @@ class DBHandler {
 			return Response::success("Credentials are valid");
 		return Response::error("Credentials you provided are not valid.");
 	}
-	
+
 	public function getCustomerName($apiToken){
 		$sql = "SELECT firstname,lastname FROM candidates ca JOIN candidatecredentials cc on ca.candidate_id=cc.candidate_id WHERE api_token=?";
 		$lsQuery = $this->_db->prepare($sql);
@@ -134,22 +129,35 @@ class DBHandler {
 			return Response::success("Customer name generated.", $username);
 		return Response::error("Customer name could not be generated at the moment.");
 	}
-	
-	public function superLog($apiToken,$task){
-		$sql = "INSERT into progresslog (candidate_id,timestamp,task_id,ip) VALUES (?, ?, ?, ?)";
-		$guid = $this->getGuidFromToken($apiToken);
-		if(!$guid)
-			return Response::error("Token you provided is not valid.");
-		$date = new DateTime();
-		$timestamp = $date->getTimestamp();
-		$ip = $_SERVER['REMOTE_ADDR'];
-		$lsQuery = $this->_db->prepare($sql);
-		$count = $lsQuery->execute(array($guid,$timestamp,$task,$ip));
-		if($count>0)
-			return Response::success("Action is logged.");
-		return Response::error("Action cannot be logged at the moment.");
+
+	public function logProgress($guid, $task) {
+		$query = "INSERT INTO progresslog (candidate_id, timestamp, task_id, ip) VALUES (?, ?, ?, ?)";
+		$response = "";
+		try {
+			$ip = $this->getUserIP();
+			$statement = $this->_db->prepare($query);
+			$count = $statement->execute(array($guid, time(), $task, $ip));
+			if ($count <= 0) {
+				throw new Exception("Action cannot be logged at the moment: ".$this->_db->errorInfo());
+			}
+			$response = Response::success("Action logged.");
+		} catch (Exception $ex) {
+			$response = Response::error($ex->getMessage());
+		}
+		return $response;
 	}
-	
+
+	public function superLog($apiToken,$task){
+		$response = "";
+		$guid = $this->getGuidFromToken($apiToken);
+		if(!$guid) {
+			$response = Response::error("Token you provided is not valid.");
+		} else {
+			$response = $this->logProgress($guid, $task);
+		}
+		return $response;
+	}
+
 	public function validateStep($apiToken,$aiTask) {
 		$guid = $this->getGuidFromToken($apiToken);
 		$task;
@@ -167,7 +175,7 @@ class DBHandler {
 		$result = $lsQuery->fetch(PDO::FETCH_ASSOC);
 		return $result==null ? true : false;
 	}
-	
+
 	public function isItLogged($guid, $task){
 		return false;
 		$sql = "SELECT * FROM progresslog WHERE candidate_id=? AND task_id=?";
@@ -176,7 +184,7 @@ class DBHandler {
 		$result = $lsQuery->fetch(PDO::FETCH_ASSOC);
 		return $result==null ? true : false;
 	}
-	
+
 	public function getGuidFromToken($apiToken){
 		$sql = "SELECT candidate_id FROM candidatecredentials WHERE api_token=?";
 		$lsQuery = $this->_db->prepare($sql);
@@ -186,7 +194,7 @@ class DBHandler {
 			return $result['candidate_id'];
 		return false;
 	}
-	
+
 	public function activationKey($apiToken) {
 		$guid = $this->getGuidFromToken($apiToken);
 		$sql = "SELECT action, used FROM activation WHERE candidate_id=?";
@@ -203,7 +211,7 @@ class DBHandler {
 		}
 		return false;
 	}
-	
+
 	public function checkEmail($guid){
 		$sql = "SELECT * FROM candidates WHERE candidate_id = ? ";
 		$lsQuery = $this->_db->prepare($sql);
@@ -212,7 +220,7 @@ class DBHandler {
 		if(count($result)>0)
 			return $result;
 		return false;
-	
+
 	}
 }
 
