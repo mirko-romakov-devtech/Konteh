@@ -5,6 +5,7 @@ set_include_path(implode(PATH_SEPARATOR, $directories));
 require_once 'ConfigParser.php';
 require_once 'dbhandler.php';
 require_once 'EncryptionHelper.php';
+require_once 'models.php';
 
 $encriptor = new EncryptionHelper(ConfigParser::DBHOST(), ConfigParser::DBDATABASE(), ConfigParser::DBUSERNAME(), ConfigParser::DBPASSWORD());
 
@@ -14,6 +15,10 @@ if(isset($_GET["key"])){
 	
 	if($link_object->GUID == null) {
 		header("Location: error.php");
+	} else {
+		$dbHandler = new DBHandler();
+		var_dump($key." ".Tasks::StartPage);
+		$dbHandler->logProgress($key, Tasks::StartPage);
 	}
 }
 else{
