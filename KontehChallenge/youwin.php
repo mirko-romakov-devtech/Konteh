@@ -18,6 +18,7 @@ if(isset($_GET["key"])){
 		if ($dbHandler->isActivationVisited($link_object->GUID)->data) {
 			header("Location: error.php");
 		}
+		$base64Guid = base64_encode($link_object->GUID);
 	}
 }
 else{
@@ -48,14 +49,14 @@ else{
 						<span class="input-group-addon">@</span> <input type="text"
 							id="emailInput" class="form-control"
 							placeholder="your_email@gmail.com" /> <input type="hidden"
-							id="guidInput" class="form-control" value="<?php echo base64_encode($link_object->GUID); ?>" />
+							id="guidInput" class="form-control" value="<?php echo $base64Guid; ?>" />
 					</div>
 				</div>
 
 				<div class="form-group">
 					<label class="control-label">Your favorite task:</label> <select
 						id="favoriteInput" class="form-control">
-						<option>getting credential</option>
+						<option>getting credentials</option>
 						<option>creating server</option>
 						<option>Finding username and password for VNC</option>
 						<option>Locating your file</option>

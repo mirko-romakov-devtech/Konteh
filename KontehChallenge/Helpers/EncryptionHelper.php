@@ -43,7 +43,6 @@ class EncryptionHelper {
 	 * @return LinkModel
 	 */
 	public function decryptObject($asEncrypted) {
-	
 		$lsDecrypted = $this->decrypt($asEncrypted);
 		$loModel = new LinkModel();
 			

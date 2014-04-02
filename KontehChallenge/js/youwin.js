@@ -16,9 +16,9 @@ $('#finishBtn').on("click", function(e){
 	console.log(str_data);
 	
 	$.post('controllers/api.php', {data: str_data}, function(response){
-		//var data = JSON.parse(response);
+		var data = JSON.parse(response);
 		console.log("DATA response from api.php: ");
-		//console.log(data);
+		console.log(data);
 		$('#formContainer').remove();
 		$('#mainContainer').css({'width':'400', 'margin-left':'-200'});
 		//$('#message').css('color','green').text("You have successfully comleted f****** everything!");

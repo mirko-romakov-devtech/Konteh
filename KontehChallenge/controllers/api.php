@@ -180,22 +180,23 @@ function SendEmail($params){
 	
 	if($params['email'] == $candidateParams['email']) {
 		$emailParams = array(
-				'firstname' => $candidateParams['firstname'],
-				'lastname' => $candidateParams['lastname'],
-				'email' => $candidateParams['email'],
-				'favorite' => $params['favorite'],
-				'feedback' => $params['feedback']);
-		
-		$data = array('action' => 'sendEmail', 'emailData' => $emailParams);
-		
+			'firstname' => "zemli",
+			'lastname' => "tuki",
+			'email' => "nemanja.tomic@devtechgroup.com",
+			'favorite' => "2",
+			'feedback' => "penis mali mlohavi");
+
 		$curl = curl_init();
-				
+		$url = "http://challengeadmin.devtechgroup.com/ajax/ajax.php";
+		
 		curl_setopt_array($curl, array(
 		CURLOPT_RETURNTRANSFER => 1,
-		CURLOPT_URL => "http://challengeadmin.devtechgroup.com/ajax/ajax.php",
+		CURLOPT_URL => $url,
+		CURLOPT_HEADER => 0,
 		CURLOPT_POST => 1,
-		CURLOPT_POSTFIELDS => $data
+		CURLOPT_POSTFIELDS => "action=sendEmail&emailData=".json_encode($emailParams)
 		));
+		
 		$response = curl_exec($curl);
 		curl_close($curl);
 		

@@ -45,9 +45,9 @@ switch ($action) {
 }
 
 function sendEmail($emailData) {
+	$data = json_decode($emailData, true);
 	$email = new EmailController();
-	//$email->mail->Host = $emailData;
-	$email->sendSuccessMail($emailData);
+	$email->sendSuccessMail($data);
 }
 
 ?>

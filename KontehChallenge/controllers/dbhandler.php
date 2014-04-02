@@ -214,6 +214,8 @@ class DBHandler {
 	}
 
 	public function checkEmail($guid){
+		var_dump($guid);
+		die();
 		$sql = "SELECT * FROM candidates WHERE candidate_id = ? ";
 		$lsQuery = $this->_db->prepare($sql);
 		$lsQuery->execute(array($guid));

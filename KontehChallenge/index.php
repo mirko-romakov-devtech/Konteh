@@ -80,7 +80,7 @@ function getCredentials(guid){
 			<h3>Instructions:</h3>
 			<ol>
 				<!--<li>Get credential <span class="glyphicon glyphicon-question-sign" id="hint_1" data-toggle="tooltip" data-placement="top" data-html="true" title="<img src='http://cdn.memegenerator.net/instances/400x/36284195.jpg' />"></span></li> -->
-				<li>Get credential <span class="glyphicon glyphicon-question-sign"
+				<li>Get credentials <span class="glyphicon glyphicon-question-sign"
 					id="hint_1"></span>
 				</li>
 				<li>Create Server<span
