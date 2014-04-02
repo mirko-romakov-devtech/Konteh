@@ -9,16 +9,16 @@ $('#finishBtn').on("click", function(e){
 	});
 	
 	console.log(parameters);
-	var data = {};
-	data.action="sendEmail";
-	data.params = parameters;
-	var str_data = JSON.stringify(data);
+	var dataObj = {};
+	dataObj.action="sendEmail";
+	dataObj.params = parameters;
+	var str_data = JSON.stringify(dataObj);
 	console.log(str_data);
 	
 	$.post('controllers/api.php', {data: str_data}, function(response){
 		//var data = JSON.parse(response);
 		console.log("DATA response from api.php: ");
-		console.log(data);
+		//console.log(data);
 		$('#formContainer').remove();
 		$('#mainContainer').css({'width':'400', 'margin-left':'-200'});
 		//$('#message').css('color','green').text("You have successfully comleted f****** everything!");
