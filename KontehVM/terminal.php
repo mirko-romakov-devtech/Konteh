@@ -17,7 +17,6 @@
 		$loEncHelper = new EncryptionHelper(DB_HOST, DB_NAME, DB_USER, DB_PASS);
 		$loDBHelper = DatabaseHandler::WithDefaultConfig();
 
-
 		$a = $loEncHelper->decryptObject($asAuthKey);
 
 		$b = $loDBHelper->getCandidateVNCDetails($a->GUID);
@@ -37,7 +36,7 @@
 			//var_dump($asAuthKey);
 			echo '<html>
 				<body>
-					<form action="'.$_SERVER['PHP_SELF'].'?key='.$asAuthKey.'" method="POST">
+					<form action="'.$_SERVER['PHP_SELF'].'?key='.urlencode($asAuthKey).'" method="POST">
 						<input type="text" name="username"/>
 						<input type="password" name="password"/>
 						<input type="submit" value="Pokidaj me jako" />

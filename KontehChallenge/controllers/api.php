@@ -110,8 +110,7 @@ function CreateServer($apiToken,$createServerRequest)
 		echo json_encode(Response::error("Token you provided is not valid."));
 }
 
-function OpenVNC($apiToken, $openVNCRequest)
-{
+function OpenVNC($apiToken, $openVNCRequest) {
 	if(!isset($apiToken)) {
 		echo json_encode(Response::error("You must send a token."));
 		return;
@@ -143,7 +142,7 @@ function OpenVNC($apiToken, $openVNCRequest)
 			//echo json_encode(Response::error("You have already openned VNC."));
 			//return;
 		}
-		$key = $GLOBALS['loDbHandler']->activationKey($apiToken);
+
 		if($GLOBALS['loDbHandler']->superLog($apiToken, Tasks::OpenVNC)) {
 			$linkModel = new LinkModel();
 			$linkModel->Action = LinkAction::OPENVNC;
@@ -153,7 +152,7 @@ function OpenVNC($apiToken, $openVNCRequest)
 			$kobaja = $encryptor->encryptObject($linkModel);
 			$GLOBALS['loDbHandler']->logKobaja($linkModel, $kobaja);
 			
-			echo json_encode(Response::success("You have successfully opened VNC.", array("url" => "http://37.220.108.91/terminal.php?key=".$key)));
+			echo json_encode(Response::success("You have successfully opened VNC.", array("url" => "http://37.220.108.91/terminal.php?key=".urlencode($kobaja))));
 		} else {
 			echo json_encode(Response::error("Something went wrong. Please try again."));
 		}
@@ -179,15 +178,16 @@ function SendEmail($params){
 	$candidateParams = $GLOBALS['loDbHandler']->checkEmail(base64_decode($params['guid']));
 	
 	if($params['email'] == $candidateParams['email']) {
+		$GLOBALS['loDbHandler']->logProgress(base64_decode($params['guid']), Tasks::FindActivationLink);
 		$emailParams = array(
-			'firstname' => "zemli",
-			'lastname' => "tuki",
-			'email' => "nemanja.tomic@devtechgroup.com",
-			'favorite' => "2",
-			'feedback' => "penis mali mlohavi");
+			'firstname' => $params['firstname'],
+			'lastname' => $params['lastname'],
+			'email' => $params['email'],
+			'favorite' => $params['favorite'],
+			'feedback' => $params['feedback']);
 
 		$curl = curl_init();
-		$url = "http://challengeadmin.devtechgroup.com/ajax/ajax.php";
+		$url = "http://challengeadmin.devtechgroup.com/KontehAdmin/ajax/ajax.php";
 		
 		curl_setopt_array($curl, array(
 		CURLOPT_RETURNTRANSFER => 1,

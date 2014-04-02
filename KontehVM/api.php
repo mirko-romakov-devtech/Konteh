@@ -45,7 +45,7 @@ try {
 
         $name = $path.$guid."/victory.txt";
         $handle = fopen($name, "w");
-        fwrite($handle, "http://challenge.devtechgroup.com/youwin.php?key=".$kobaja.PHP_EOL);
+        fwrite($handle, "http://challenge.devtechgroup.com/youwin.php?key=".urlencode($kobaja).PHP_EOL);
         fclose($handle);
 
 } catch (Exception $ex) {

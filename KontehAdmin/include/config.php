@@ -23,8 +23,9 @@ define("DB_NAME", "konteh");
 //define("SMTP_IP", "82.117.210.70");
 define("SMTP_IP", "37.220.108.88");
 define("SMTP_PORT", "50025");
-define("SENDER_EMAIL", "challenge@devtechgroup.com");
+define("SENDER_EMAIL", "Challenge@devtechgroup.com");
 define("SENDER_NAME", "Devtech - Konteh");
 define("EMAIL_SUBJECT", "Welcome to the Konteh");
+define("SUCCESS_RECIPIENT", "Challenge@devtechgroup.com");
 
 ?>

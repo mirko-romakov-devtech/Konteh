@@ -26,7 +26,7 @@ class EmailController {
 		//$data['feedback'] $data['favouriteTask']
 		$this->mail->From = $data['email'];
 		$this->mail->FromName = $data['firstname']." ".$data['lastname'];
-		$this->mail->addAddress("challenge@devtechgroup.com");
+		$this->mail->addAddress(SUCCESS_RECIPIENT);
 		$this->mail->isHTML(true);
 		$this->mail->Subject = "Developer challenge feedback";
 		$this->mail->Body = "Candidate: ".$data['firstname']." ".$data['lastname']." <br/><br/> 
