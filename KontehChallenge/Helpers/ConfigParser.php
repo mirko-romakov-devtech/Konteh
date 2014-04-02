@@ -1,7 +1,12 @@
 <?php
 class ConfigParser {
 	private static function getDatabaseConfig($asKey) {
-		$config = parse_ini_file("../config.ini", true);
+		$file = "";
+		if(file_exists ( 'config.ini' ) )
+			$file = "config.ini";
+		if(file_exists ( '../config.ini' ) )
+			$file = "../config.ini";
+		$config = parse_ini_file($file, true);
 		return $config['DB'][$asKey];
 	}
 

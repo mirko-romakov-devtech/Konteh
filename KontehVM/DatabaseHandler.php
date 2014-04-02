@@ -32,4 +32,20 @@ class DatabaseHandler {
 		$statement = $this->pdoInstance->prepare("INSERT INTO konteh.activation (candidate_id, action, encrypted_value, used) VALUES (?, ?, ?, ?)");
 		$statement->execute(array($model->GUID, $model->Action, $encrypted, $model->Used));
 	}
+
+	public function getCandidateVNCDetails($guid){
+		$statement = $this->pdoInstance->prepare("SELECT * FROM konteh.candidatecredentials WHERE candidate_id = ?");
+		$executedQuery = $statement->execute(array($guid));
+		if(!$executedQuery){
+			return 'error';
+		}
+
+		$dbResponse = $statement->fetchAll(PDO::FETCH_ASSOC);
+		if(empty($dbResponse)){
+			return false;
+		} else {
+			return array("vnc_username"=>$dbResponse[0]['vnc_username'], "vnc_password"=>$dbResponse[0]['vnc_password']);
+		}
+		
+	}
 }
