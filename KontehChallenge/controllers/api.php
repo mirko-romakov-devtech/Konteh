@@ -117,7 +117,7 @@ function OpenVNC($apiToken, $openVNCRequest) {
 	}
 	if(checkToken($apiToken)) {
 		if($GLOBALS['loDbHandler']->validateStep($apiToken,Tasks::OpenVNC)){
-			echo json_encode(Response::error("You must first create server."));
+			echo json_encode(Response::error("You must first find VNC credentials."));
 			return;
 		}
 		if(!checkVNCRequest($openVNCRequest, $apiToken))
