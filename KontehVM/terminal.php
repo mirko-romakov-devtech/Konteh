@@ -37,8 +37,10 @@
 			echo '<html>
 				<body>
 					<form action="'.$_SERVER['PHP_SELF'].'?key='.urlencode($asAuthKey).'" method="POST">
-						<input type="text" name="username"/>
-						<input type="password" name="password"/>
+						VNC Username:
+						<input type="text" name="username"/><br />
+						VNC Password:
+						<input type="password" name="password"/><br />
 						<input type="submit" value="Pokidaj me jako" />
 					</form>
 				</body>
