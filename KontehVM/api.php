@@ -4,8 +4,7 @@ ini_set('display_errors', 1);
 
 $ssc = $_POST['supersecretkey'];
 $guid = $_POST['guid'];
-var_dump($guid);
-die();
+
 if(!isset($ssc, $guid)){
         echo "Dalje neces moci!";
         die();
