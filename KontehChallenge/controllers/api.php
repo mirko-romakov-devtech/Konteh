@@ -62,7 +62,7 @@ function GetCredentials($guid){
 			echo json_encode($response);
 			return;
 		}
-		$data = array('token'=>$response->data, 'DBcredentials' => array('host'=>ConfigParser::DBHOST(),'username'=>ConfigParser::DBDUMMYUSER(), 'password'=>ConfigParser::DBDUMMYPASS()));
+		$data = array('token'=>$response->data, 'DBcredentials' => array('host'=>ConfigParser::DBHOST(),'username'=>ConfigParser::DBDUMMYUSER(), 'password'=>ConfigParser::DBDUMMYPASS(), 'databaseType'=>'MySQL'));
 		if($GLOBALS['loDbHandler']->superLog($response->data, Tasks::GetCredentials))
 			echo json_encode(Response::success("You have successfully requested credentials.", $data));
 		else 
