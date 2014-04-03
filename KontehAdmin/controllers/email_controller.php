@@ -15,9 +15,10 @@ class EmailController {
 		$this->mail->isSMTP();                                      // Set mailer to use SMTP
 		$this->mail->Host = SMTP_IP;
 		$this->mail->Port = SMTP_PORT;						 // Specify main and backup server;
-		$this->mail->SMTPAuth = false;                              // Enable SMTP authentication
-		$this->mail->Username = '';                            // SMTP username
-		$this->mail->Password = '';
+		$this->mail->SMTPAuth = true;                              // Enable SMTP authentication
+		$this->mail->SMTPSecure = "tls";
+		$this->mail->Username = SMTP_USER;                            // SMTP username
+		$this->mail->Password = SMTP_PASS;
 		$this->mail->From = SENDER_EMAIL;
 		$this->mail->FromName = SENDER_NAME;
 	}
@@ -60,8 +61,6 @@ class EmailController {
 		$this->mail->addAddress($email_address, $first_name." ".$last_name);  // Add a recipient
 
 		$this->mail->WordWrap = 50;                                 // Set word wrap to 50 characters
-		//$mail->addAttachment('/var/tmp/file.tar.gz');         // Add attachments
-		//$mail->addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
 		$this->mail->isHTML(true);                                  // Set email format to HTML
 	
 		$this->mail->Subject = EMAIL_SUBJECT;
@@ -80,16 +79,21 @@ class EmailController {
 
 		if(!$this->mail->send()) {
 			echo 'Message could not be sent.';
-			echo 'Mailer Error: ' . $mail->ErrorInfo;
+			echo 'Mailer Error: ' . $this->mail->ErrorInfo;
 		}
 	}
 
 
 }
 
-// $data = array("{F695B391-1F2D-C6AC-CDD8-F8F26845F075}", "nemanja.tomic@devtechgroup.com", "Mirko", "Simanic");
+
+// var_dump("penis");
+// $data = array("{F695B391-1F2D-C6AC-CDD8-F8F26845F075}", "nemus87@gmail.com", "Nemanja", "Tomic");
+// var_dump("penis");
 // $sendemail = new EmailController();
+// var_dump("penis");
 // $sendemail->send($data);
+// var_dump("penis");
 
 
 ?>

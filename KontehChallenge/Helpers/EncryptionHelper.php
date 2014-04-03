@@ -45,7 +45,7 @@ class EncryptionHelper {
 	public function decryptObject($asEncrypted) {
 		$lsDecrypted = $this->decrypt($asEncrypted);
 		$loModel = new LinkModel();
-			
+
 		$loDecryptedArray = explode("|", $lsDecrypted);
 			
 		if(count($loDecryptedArray) >=2) {

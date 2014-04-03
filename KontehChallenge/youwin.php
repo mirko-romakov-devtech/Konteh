@@ -13,7 +13,7 @@ if(isset($_GET["key"])){
 	$link_object = $encriptor->decryptObject($key);
 
 	if($link_object->GUID == null) {
-		header("Location: error.php");
+		header("Location: error.php?code=".Errors::GuidNotFound);
 	} else {
 		$dbHandler = new DBHandler();
 		if ($dbHandler->isActivationVisited($link_object->GUID)->data) {
@@ -21,8 +21,7 @@ if(isset($_GET["key"])){
 		}
 		$base64Guid = base64_encode($link_object->GUID);
 	}
-}
-else{
+} else{
 	header("Location: error.php?code=".Errors::KeyNotFound);
 }
 ?>
