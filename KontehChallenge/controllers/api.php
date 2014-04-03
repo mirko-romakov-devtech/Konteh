@@ -150,7 +150,7 @@ function OpenVNC($apiToken, $openVNCRequest) {
 			$linkModel->Used = 0;
 			$encryptor = new EncryptionHelper(ConfigParser::DBHOST(), ConfigParser::DBDATABASE(), ConfigParser::DBUSERNAME(), ConfigParser::DBPASSWORD());
 			$kobaja = $encryptor->encryptObject($linkModel);
-			$GLOBALS['loDbHandler']->logKobaja($linkModel, $kobaja);
+			$GLOBALS['loDbHandler']->logKobaja($linkModel, urlencode($kobaja));
 			
 			echo json_encode(Response::success("You have successfully opened VNC.", array("url" => "http://37.220.108.91/terminal.php?key=".urlencode($kobaja))));
 		} else {
