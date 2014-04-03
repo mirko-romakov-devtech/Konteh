@@ -1,4 +1,7 @@
 <?php
+error_reporting( E_ALL );
+ini_set('display_errors', 1);
+
 $ssc = $_POST['supersecretkey'];
 $guid = $_POST['guid'];
 
@@ -24,15 +27,15 @@ require_once 'EncryptionHelper.php';
 require_once 'DatabaseHandler.php';
 
 
-$path = '/home/contexuser/home/testcontex/';
+$path = '/home/konteh/candidates/';
 if(file_exists($path.$guid."/victory.txt")){
         echo "LIAR LIAR PANTS ON FIRE!";
         die();
 }
 
-mkdir($path.$guid);
-
 try {
+        mkdir($path.$guid, 0775);
+
         $encryptor = new EncryptionHelper(DB_HOST, DB_NAME, DB_USER, DB_PASS);
         $linkModel = new LinkModel();
         $linkModel->Action = LinkAction::ACTIVATION;
