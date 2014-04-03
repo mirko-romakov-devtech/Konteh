@@ -88,6 +88,7 @@ class DatabaseHandler {
 			if (!$count) {
 				throw new Exception("Action cannot be logged at the moment: ".$this->_db->errorInfo());
 			}
+			$response = "Success!";
 		} catch (Exception $ex) {
 			$response = $ex->getMessage();
 		}

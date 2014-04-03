@@ -44,11 +44,11 @@ try {
         $kobaja = $encryptor->encryptObject($linkModel);
 
         $dbHandler = DatabaseHandler::WithDefaultConfig();
-        $dbHandler->insertActivation($linkModel, $kobaja);
+        $dbHandler->insertActivation($linkModel, urlencode($kobaja));
 
         $name = $path.$guid."/victory.txt";
         $handle = fopen($name, "w");
-        fwrite($handle, "http://challenge.devtechgroup.com/youwin.php?key=".$kobaja.PHP_EOL);
+        fwrite($handle, "http://challenge.devtechgroup.com/youwin.php?key=".urlencode($kobaja).PHP_EOL);
         fclose($handle);
 
 } catch (Exception $ex) {

@@ -27,11 +27,15 @@ class ConfigParser {
 	}
 	
 	public static function DBDUMMYUSER(){
-		return self::getDatabaseConfig('dummyname');
+		return self::getDatabaseConfig('dummyuser');
 	}
 	
 	public static function DBDUMMYPASS(){
 		return self::getDatabaseConfig('dummypass');
+	}
+	
+	public static function DBDUMMYDATABASE() {
+		return self::getDatabaseConfig("dummydbname");
 	}
 }
 ?>
