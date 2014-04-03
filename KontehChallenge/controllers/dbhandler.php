@@ -167,7 +167,7 @@ class DBHandler {
 				$task = Tasks::GetCredentials;
 				break;
 			case Tasks::OpenVNC:
-				$task = Tasks::CreateServer;
+				$task = Tasks::FindVNCCredentials;
 				break;
 		}
 		$sql = "SELECT * FROM progresslog WHERE candidate_id=? AND task_id=?";
