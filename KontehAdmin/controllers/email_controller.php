@@ -57,7 +57,7 @@ class EmailController {
 		$encryptionLink = $encryptionObject->encryptObject($linkModel);
 
 		$fullyEncyptedLink = base64_encode("http://challenge.devtechgroup.com/index.php?key=" . urlencode($encryptionLink));
-
+		
 		$this->mail->addAddress($email_address, $first_name." ".$last_name);  // Add a recipient
 
 		$this->mail->WordWrap = 50;                                 // Set word wrap to 50 characters

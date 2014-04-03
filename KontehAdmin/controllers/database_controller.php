@@ -33,6 +33,12 @@ class DatabaseController{
 		$statement = $this->databaseHandler->prepare($sql);
 		$statement->execute();
 	}
+	
+	public function executeQuery($query, $params) {
+		$statement = $this->databaseHandler->prepare($query);
+		$statement->execute($params);
+		return $statement->fetchAll(PDO::FETCH_ASSOC);
+	}
 
 }
 
