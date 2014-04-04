@@ -3,34 +3,6 @@ require_once 'ConfigParser.php';
 require_once 'EncryptionHelper.php';
 require_once 'models.php';
 
-//$model = new DBHandler();
-//$model->generateApiToken("asdff");
-//$model->asdfSql("DELETE FROM candidatecredentials WHERE api_token='c3ff70167dc2be59151ae18dec4a51a5'");
-//$model->asdfSql("TRUNCATE candidates");
-//$model->tranketuj();
-//$model->viewTable("progresslog");
-//$model->asdfSql("show tables");
-//$model->viewTable("candidatecredentials");
-//$model->asdfSql("SELECT firstname,lastname FROM candidates as ca JOIN candidatecredentials as cc on ca.candidate_id=cc.candidate_id WHERE api_token='46a77beb93bd2bfd7b7b8463b5fb071b'");
-//echo '<br>';
-//echo $model->checkToken("c3ff70167dc2be59151ae18dec4a51a5") ? "ima" : "nema";
-//$model->asdfSql("DELETE FROM candidatecredentials WHERE candidate_id=asdf");
-/*email
- firstname
-lastname
-notes*/
-/*foreach($model->_db->query("show databases") as $table) {
- print_r($table);
-//echo $table[0];
-echo '<br><br>';
-$sql = "DESCRIBE ".$table[0];
-foreach($model->_db->query($sql) as $row){
-echo $row['Field'];
-echo '<br>';
-}
-echo '<br><br><br><br>';
-}*/
-
 /*
  DATABASE
  */

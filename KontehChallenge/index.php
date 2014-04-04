@@ -134,6 +134,8 @@ function getCredentials(guid){
 				<p>Enter Java control panel (C:\Program Files
 					(x86)\Java\jre7\bin\javacpl.exe) In security tab lower security
 					level to medium. Reopen the browser</p>
+					
+				<p>If you encounter any additional issues, feel free to contact us on <a href="mailto:konteh@devtechgroup.com">konteh@devtechgroup.com</a></p>
 			</div>
 
 		</div>
