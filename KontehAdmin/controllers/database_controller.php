@@ -18,7 +18,11 @@ class DatabaseController{
 
 	public function selectData(){
 		$result = "";
-		$query = $this->databaseHandler->query("SELECT c.candidate_id as candidate_id, c.email as email, c.firstname as firstname, c.lastname as lastname, c.notes as notes, IFNULL(t.name, 'None') as task FROM `candidates` c LEFT JOIN (`progresslog` p INNER JOIN `tasks` t ON p.task_id = t.task_id) ON c.candidate_id = p.candidate_id WHERE p.timestamp = (SELECT MAX(timestamp) FROM progresslog p WHERE p.candidate_id = c.candidate_id) OR NOT EXISTS(SELECT candidate_id FROM `progresslog` WHERE candidate_id = p.candidate_id)");
+		$query = $this->databaseHandler->query("SELECT c.candidate_id, c.firstname, c.email, c.lastname, IFNULL(MAX(p.task_id), \"none\") max_task_id, IFNULL((SELECT t.name FROM tasks t WHERE t.task_id = MAX(p.task_id)), \"none\") as task_name, IFNULL(MAX(p.timestamp), \"none\") progress_time 
+				FROM progresslog p
+				RIGHT JOIN candidates c ON c.candidate_id = p.candidate_id
+				LEFT JOIN tasks t ON t.task_id = p.task_id
+				GROUP BY c.candidate_id");
 		$query->setFetchMode(PDO::FETCH_CLASS, 'Candidate');
         $result = $query->fetchAll();
         return $result;
@@ -28,6 +32,12 @@ class DatabaseController{
 		$sql="DELETE FROM `".DB_TABLE."`";
 		$statement = $this->databaseHandler->prepare($sql);
 		$statement->execute();
+	}
+	
+	public function executeQuery($query, $params) {
+		$statement = $this->databaseHandler->prepare($query);
+		$statement->execute($params);
+		return $statement->fetchAll(PDO::FETCH_ASSOC);
 	}
 
 }

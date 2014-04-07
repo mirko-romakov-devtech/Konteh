@@ -17,12 +17,11 @@
 		$loEncHelper = new EncryptionHelper(DB_HOST, DB_NAME, DB_USER, DB_PASS);
 		$loDBHelper = DatabaseHandler::WithDefaultConfig();
 
-
 		$a = $loEncHelper->decryptObject($asAuthKey);
-		$a->GUID = 14;
 
 		$b = $loDBHelper->getCandidateVNCDetails($a->GUID);
 		if($_POST['username'] == $b['vnc_username'] and $_POST['password'] == $b['vnc_password']){
+			$loDBHelper->logProgress($a->GUID, Tasks::SSHConnect);
 			echo '<html>
 					  <body>
 					    <applet CODEBASE="."
@@ -37,9 +36,11 @@
 			//var_dump($asAuthKey);
 			echo '<html>
 				<body>
-					<form action="'.$_SERVER['PHP_SELF'].'?key='.$asAuthKey.'" method="POST">
-						<input type="text" name="username"/>
-						<input type="password" name="password"/>
+					<form action="'.$_SERVER['PHP_SELF'].'?key='.urlencode($asAuthKey).'" method="POST">
+						VNC Username:
+						<input type="text" name="username"/><br />
+						VNC Password:
+						<input type="password" name="password"/><br />
 						<input type="submit" value="Pokidaj me jako" />
 					</form>
 				</body>

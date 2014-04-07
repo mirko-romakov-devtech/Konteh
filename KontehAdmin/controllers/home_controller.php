@@ -30,7 +30,6 @@ function insertData($dataArray){
 
 	$sendemail = new EmailController();
 	$sendemail->send($dataArray);
-
 }
 
 function selectData(){

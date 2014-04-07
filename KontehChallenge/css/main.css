@@ -1,45 +1,66 @@
-body{
-background-color:rgb(245,245,245);
-}
-#mainImage{
-/*background-color:rgb(50,196,237);*/
-background-color:rgb(245,245,245);
-max-height:400px;
-padding:0px
+body {
+	background-color: rgb(245, 245, 245);
 }
 
-.glyphicon-question-sign{
-	cursor:pointer
+#mainContainer {
+	padding: 10px;
+	width: 600;
+	min-height: 300;
+	color: rgb(50, 196, 237);
+	background-color: rgb(245, 245, 245);
+	position: absolute;
+	top: 150px;
+	left: 50%;
+	/*margin-top:-150px;*/
+	margin-left: -300;
+	display: none;
+	-webkit-border-radius: 15px;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+	font-size: 14pt;
 }
 
-#documentation{
- cursor:pointer
-}
-#mainImage{
-border:0
+#mainImage {
+	/*background-color:rgb(50,196,237);*/
+	background-color: rgb(245, 245, 245);
+	max-height: 400px;
+	padding: 0px
 }
 
-h3{
-	font-weight:bold
+.glyphicon-question-sign {
+	cursor: pointer
+}
+
+#documentation {
+	cursor: pointer
+}
+
+#mainImage {
+	border: 0
+}
+
+h3 {
+	font-weight: bold
 }
 
 .tooltip-inner {
-  color: #000;
-  background: black;
-  border: solid 1px #000000;
-  max-width:800px;
-  max-height:400px;
-  opacity:1
+	color: #fff;
+	background: black;
+	border: solid 1px #000000;
+	max-width: 800px;
+	max-height: 400px;
+	opacity: 1
 }
+
 .tooltip.in {
-  opacity: 1;
-  filter: alpha(opacity=100);
+	opacity: 1;
+	filter: alpha(opacity = 100);
 }
 
-#guidDetails h4{
-color:red
+#guidDetails h4 {
+	color: red
 }
 
-#troubleDiv{
-	margin-top:20px
+#troubleDiv {
+	margin-top: 20px
 }

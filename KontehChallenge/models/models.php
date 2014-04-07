@@ -12,6 +12,18 @@ abstract class Tasks {
 	const FindActivationLink = 7;
 }
 
+class Errors {
+	const ActivationUsed = 1;
+	const KeyNotFound = 2;
+	const GuidNotFound = 3;
+
+	public static $ErrorsArray = array(
+			'1' => 'You already used this link.',
+			'2' => 'Please provide valid key.',
+			'3' => 'GUID not found in encrypted value.'
+	); 
+}
+
 class CandidateCredentials {
 	public $candidatecredentials_id;
 	public $api_token;
@@ -80,21 +92,19 @@ class ApiResponse {
 }
 
 class Response {
-	public static function error($asMessage)
-	{
+	public static function error($asMessage) {
 		$response = new ApiResponse();
 		$response->success = false;
 		$response->message = $asMessage;
 		return $response;
 	}
 	
-	public static function success($asMessage, $asData)
-	{
+	public static function success($asMessage, $asData)	{
 		$response = new ApiResponse();
 		$response->success = true;
 		$response->message = $asMessage;
 		$response->data = $asData;
-			
+
 		return $response;
 	}
 }

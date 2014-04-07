@@ -13,7 +13,7 @@ function fillTable(){
 				var ArrayOfObjects = JSON.parse(data);
 				var output = "<tr><th>CANDIDATE ID</th><th>FIRST NAME</th><th>LAST NAME</th><th>E-MAIL ADDRESS</th><th>STATUS</th></tr>";
 				for(var i = 0; i < ArrayOfObjects.length; i++){
-					output += "<tr><td>"+ArrayOfObjects[i].candidate_id+"<td>"+ArrayOfObjects[i].firstname+"</td><td>"+ArrayOfObjects[i].lastname+"</td><td>"+ArrayOfObjects[i].email+"</td><td>"+ArrayOfObjects[i].task+"</td></tr>";
+					output += "<tr><td>"+ArrayOfObjects[i].candidate_id+"<td>"+ArrayOfObjects[i].firstname+"</td><td>"+ArrayOfObjects[i].lastname+"</td><td>"+ArrayOfObjects[i].email+"</td><td>"+ArrayOfObjects[i].task_name+"</td></tr>";
 				}
 
 				$('#myTable').html(output);

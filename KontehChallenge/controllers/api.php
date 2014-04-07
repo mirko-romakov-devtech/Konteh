@@ -1,4 +1,6 @@
 <?php
+header('Access-Control-Allow-Origin: *');
+
 $directories = array('../controllers', '../Helpers', '../models', get_include_path());
 set_include_path(implode(PATH_SEPARATOR, $directories));
 
@@ -37,6 +39,10 @@ switch($data['action']){
 		break;
 	case "sendEmail":
 		SendEmail($data['params']);
+		break;
+	case "getVersion":
+		GetVersion($data['token']);
+		break;
 	default :
 		echo json_encode(Response::error("You must provide a valid action."));
 		return;
@@ -56,7 +62,7 @@ function GetCredentials($guid){
 			echo json_encode($response);
 			return;
 		}
-		$data = array('token'=>$response->data, 'DBcredentials' => array('host'=>ConfigParser::DBDATABASE(),'username'=>ConfigParser::DBDUMMYUSER(), 'password'=>ConfigParser::DBDUMMYPASS()));
+		$data = array('token'=>$response->data, 'DBcredentials' => array('host'=>ConfigParser::DBHOST(),'username'=>ConfigParser::DBDUMMYUSER(), 'password'=>ConfigParser::DBDUMMYPASS(), 'databaseType'=>'MySQL'));
 		if($GLOBALS['loDbHandler']->superLog($response->data, Tasks::GetCredentials))
 			echo json_encode(Response::success("You have successfully requested credentials.", $data));
 		else 
@@ -104,16 +110,14 @@ function CreateServer($apiToken,$createServerRequest)
 		echo json_encode(Response::error("Token you provided is not valid."));
 }
 
-function OpenVNC($apiToken, $openVNCRequest)
-{
-	if(!isset($apiToken))
-	{
+function OpenVNC($apiToken, $openVNCRequest) {
+	if(!isset($apiToken)) {
 		echo json_encode(Response::error("You must send a token."));
 		return;
 	}
 	if(checkToken($apiToken)) {
 		if($GLOBALS['loDbHandler']->validateStep($apiToken,Tasks::OpenVNC)){
-			echo json_encode(Response::error("You must first create server."));
+			echo json_encode(Response::error("You must first find VNC credentials."));
 			return;
 		}
 		if(!checkVNCRequest($openVNCRequest, $apiToken))
@@ -124,46 +128,84 @@ function OpenVNC($apiToken, $openVNCRequest)
 	
 		// Get cURL resource
 		$curl = curl_init();
-		// Set some options - we are passing in a useragent too here
 		curl_setopt_array($curl, array(
 			CURLOPT_RETURNTRANSFER => 1,
 			CURLOPT_URL => $url,
 			CURLOPT_POST => 1,
 			CURLOPT_POSTFIELDS => $data
 		));
-		// Send the request & save response to $resp
 		$url = curl_exec($curl);
-		// Close request to clear up some resources
 		curl_close($curl);
+		
 		if($url=="LIAR LIAR PANTS ON FIRE!"){
 			//ovo se desava kada je fajl vec kreiran na VM
 			//echo json_encode(Response::error("You have already openned VNC."));
 			//return;
 		}
-		$key = $GLOBALS['loDbHandler']->activationKey($apiToken);
-		if($GLOBALS['loDbHandler']->superLog($apiToken, Tasks::OpenVNC))
-			echo json_encode(Response::success("You have successfully opened VNC.", array("url" => "http://37.220.108.91/terminal.php?key=".$key)));
-		else
+
+		if($GLOBALS['loDbHandler']->superLog($apiToken, Tasks::OpenVNC)) {
+			$linkModel = new LinkModel();
+			$linkModel->Action = LinkAction::OPENVNC;
+			$linkModel->GUID = $data['guid'];
+			$linkModel->Used = 0;
+			$encryptor = new EncryptionHelper(ConfigParser::DBHOST(), ConfigParser::DBDATABASE(), ConfigParser::DBUSERNAME(), ConfigParser::DBPASSWORD());
+			$kobaja = $encryptor->encryptObject($linkModel);
+			$GLOBALS['loDbHandler']->logKobaja($linkModel, urlencode($kobaja));
+			
+			echo json_encode(Response::success("You have successfully opened VNC.", array("url" => "http://37.220.108.91/terminal.php?key=".urlencode($kobaja))));
+		} else {
 			echo json_encode(Response::error("Something went wrong. Please try again."));
+		}
 	} 
 	else
 		echo json_encode(Response::error("Token you provided is not valid."));
 }
 
+function GetVersion($apiToken) {
+	$responseObject = new ApiResponse();
+	if (checkToken($apiToken)) {
+		$apiDetails = (object) array("name"=>"Devtech challenge","version"=>"1.0");
+		$responseObject->data = $apiDetails;
+	} else {
+		$responseObject->success = false;
+		$responseObject->message = "Invalid token";
+	}
+	echo json_encode($responseObject);
+}
+
 
 function SendEmail($params){
+	$candidateParams = $GLOBALS['loDbHandler']->checkEmail(base64_decode($params['guid']));
 	
-	$candidateParams = $GLOBALS['loDbHandler']->checkEmail($params['guid']);
-	if($params['email'] == $candidateParams['email'])
-	{
-		//sent mail function
-		$emailParams = array($candidateParams['guid'], $candidateParams['email'], $candidateParams['firstname'], $candidateParams['lastname']);
-		$mail = new EmailController();
-		$mail->send($emailParams);
-		echo json_encode(Response::success("You have finished Challenge successfully. Congratulation!", $emailParams));
-	}
-	else
+	if($params['email'] == $candidateParams['email']) {
+		$GLOBALS['loDbHandler']->logProgress(base64_decode($params['guid']), Tasks::FindActivationLink);
+		$emailParams = array(
+			'firstname' => $params['firstname'],
+			'lastname' => $params['lastname'],
+			'email' => $params['email'],
+			'favorite' => $params['favorite'],
+			'feedback' => $params['feedback']);
+
+		$curl = curl_init();
+		$url = "http://challengeadmin.devtechgroup.com/KontehAdmin/ajax/ajax.php";
+		
+		curl_setopt_array($curl, array(
+		CURLOPT_RETURNTRANSFER => 1,
+		CURLOPT_URL => $url,
+		CURLOPT_HEADER => 0,
+		CURLOPT_POST => 1,
+		CURLOPT_POSTFIELDS => "action=sendEmail&emailData=".json_encode($emailParams)
+		));
+		
+		$response = curl_exec($curl);
+		curl_close($curl);
+		
+		$GLOBALS['loDbHandler']->setActivationVisited(base64_decode($params['guid']));
+		
+		echo json_encode(Response::success("You have finished Challenge successfully. Congratulations!"));
+	} else {
 	 	echo json_encode(Response::error("Your email is not valid!"));
+	}
 }
 
 /*

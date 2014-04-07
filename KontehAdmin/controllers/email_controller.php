@@ -10,17 +10,35 @@ class EmailController {
 	 */
 	private $mail;
 
-	public function __construct(){
-
+	public function __construct(){	
 		$this->mail = new PHPMailer;
 		$this->mail->isSMTP();                                      // Set mailer to use SMTP
 		$this->mail->Host = SMTP_IP;
 		$this->mail->Port = SMTP_PORT;						 // Specify main and backup server;
-		$this->mail->SMTPAuth = false;                              // Enable SMTP authentication
-		$this->mail->Username = '';                            // SMTP username
-		$this->mail->Password = '';
+		$this->mail->SMTPAuth = true;                              // Enable SMTP authentication
+		$this->mail->SMTPSecure = "tls";
+		$this->mail->Username = SMTP_USER;                            // SMTP username
+		$this->mail->Password = SMTP_PASS;
 		$this->mail->From = SENDER_EMAIL;
 		$this->mail->FromName = SENDER_NAME;
+	}
+	
+	public function sendSuccessMail($data) {
+		//$data['feedback'] $data['favouriteTask']
+		$this->mail->From = $data['email'];
+		$this->mail->FromName = $data['firstname']." ".$data['lastname'];
+		$this->mail->addAddress(SUCCESS_RECIPIENT);
+		$this->mail->isHTML(true);
+		$this->mail->Subject = "Developer challenge feedback";
+		$this->mail->Body = "Candidate: ".$data['firstname']." ".$data['lastname']." <br/><br/> 
+							Favorite task: " .$data['favorite']. "<br/>
+							Feedback: " .$data['feedback']. "<br/><br/>
+				";
+		
+		if(!$this->mail->send()) {
+			echo 'Message could not be sent.';
+			echo 'Mailer Error: ' . $mail->ErrorInfo;
+		}
 	}
 
 	public function send($data){
@@ -35,17 +53,16 @@ class EmailController {
 		$linkModel->Used = 0;
 
 		$encryptionObject = new EncryptionHelper(DB_HOST, DB_NAME, DB_USER, DB_PASS);
-		
+
 		$encryptionLink = $encryptionObject->encryptObject($linkModel);
+
 		$fullyEncyptedLink = base64_encode("http://challenge.devtechgroup.com/index.php?key=" . urlencode($encryptionLink));
 		
 		$this->mail->addAddress($email_address, $first_name." ".$last_name);  // Add a recipient
 
 		$this->mail->WordWrap = 50;                                 // Set word wrap to 50 characters
-		//$mail->addAttachment('/var/tmp/file.tar.gz');         // Add attachments
-		//$mail->addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
 		$this->mail->isHTML(true);                                  // Set email format to HTML
-		
+	
 		$this->mail->Subject = EMAIL_SUBJECT;
 		$this->mail->Body    = 	"Dear ".$first_name." ".$last_name.", <br/><br/> 
 								Welcome to the Konteh <br/><br/>
@@ -60,21 +77,23 @@ class EmailController {
 								";
 		$this->mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
-		var_dump("before sending");
 		if(!$this->mail->send()) {
 			echo 'Message could not be sent.';
-			echo 'Mailer Error: ' . $mail->ErrorInfo;
+			echo 'Mailer Error: ' . $this->mail->ErrorInfo;
 		}
-		var_dump("after sending");
-
 	}
 
 
 }
 
-// $data = array("{F695B391-1F2D-C6AC-CDD8-F8F26845F075}", "nemanja.tomic@devtechgroup.com", "Mirko", "Simanic");
+
+// var_dump("penis");
+// $data = array("{F695B391-1F2D-C6AC-CDD8-F8F26845F075}", "nemus87@gmail.com", "Nemanja", "Tomic");
+// var_dump("penis");
 // $sendemail = new EmailController();
+// var_dump("penis");
 // $sendemail->send($data);
+// var_dump("penis");
 
 
 ?>

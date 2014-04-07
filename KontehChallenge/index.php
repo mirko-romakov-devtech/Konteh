@@ -5,15 +5,18 @@ set_include_path(implode(PATH_SEPARATOR, $directories));
 require_once 'ConfigParser.php';
 require_once 'dbhandler.php';
 require_once 'EncryptionHelper.php';
+require_once 'models.php';
 
 $encriptor = new EncryptionHelper(ConfigParser::DBHOST(), ConfigParser::DBDATABASE(), ConfigParser::DBUSERNAME(), ConfigParser::DBPASSWORD());
 
-if(isset($_GET["key"])){
+if(isset($_GET["key"])) {
 	$key = $_GET["key"];
 	$link_object = $encriptor->decryptObject($key);
-	
 	if($link_object->GUID == null) {
 		header("Location: error.php");
+	} else {
+		$dbHandler = new DBHandler();
+		$dbHandler->logProgress($link_object->GUID, Tasks::StartPage);
 	}
 }
 else{
@@ -61,7 +64,7 @@ function getCredentials(guid){
 		</div>
 	</div>
 
-	<div class="col-md-12" id="mainContainer">
+	<div class="col-md-12" id="">
 		<div id="mainImage" class="thumbnail">
 			<img src="images/welldone.jpg" class="img-responsive" width="400">
 		</div>
@@ -69,7 +72,9 @@ function getCredentials(guid){
 		<div class="col-md-offset-3" id="guidDetails">
 			<h3>Your guid:</h3>
 			<h4>
-				<?php echo $link_object->GUID ?>
+				"
+				<?php echo $link_object->GUID; ?>
+				"
 			</h4>
 		</div>
 
@@ -77,31 +82,31 @@ function getCredentials(guid){
 			<h3>Instructions:</h3>
 			<ol>
 				<!--<li>Get credential <span class="glyphicon glyphicon-question-sign" id="hint_1" data-toggle="tooltip" data-placement="top" data-html="true" title="<img src='http://cdn.memegenerator.net/instances/400x/36284195.jpg' />"></span></li> -->
-				<li>Get credential <span class="glyphicon glyphicon-question-sign"
+				<li>Get credentials <span class="glyphicon glyphicon-question-sign"
 					id="hint_1"></span>
 				</li>
 				<li>Create Server<span
 					class="glyphicon glyphicon-question-sign hint" id="hint_2"
 					data-toggle="tooltip" data-placement="top" data-html="true"
-					title="<img   src='images/hint_2.jpg' />"></span>
+					title="<img     src='images/hint_2.jpg' />"></span>
 				</li>
 
 				<li>Find username and password for opening VNC connection<span
-					class="glyphicon glyphicon-question-sign hint" id="hint_2"
-					data-toggle="tooltip" data-placement="top" data-html="true"
-					title="<img   src='images/hint_2.jpg' />"></span>
+					class="glyphicon glyphicon-question-sign hint" id="hint_3"
+					data-toggle="tooltip" data-placement="top"
+					title="Call store procedure getVNCCredentials, and pass your guid as argument"></span>
 				</li>
 
 				<li>Open VNC connection<span
 					class="glyphicon glyphicon-question-sign hint" id="hint_2"
 					data-toggle="tooltip" data-placement="top" data-html="true"
-					title="<img   src='images/hint_2.jpg' />"></span>
+					title="<img     src='images/hint_2.jpg' />"></span>
 				</li>
 
 				<li>Locate file on your server <span
 					class="glyphicon glyphicon-question-sign hint" id="hint_3"
 					data-toggle="tooltip" data-placement="top" data-html="true"
-					title="<img   src='images/hint_3.jpg' />" ></span>
+					title="<img     src='images/hint_3.jpg' />" ></span>
 				</li>
 				<li>Follow the link and complete the challange</li>
 			</ol>
@@ -129,6 +134,8 @@ function getCredentials(guid){
 				<p>Enter Java control panel (C:\Program Files
 					(x86)\Java\jre7\bin\javacpl.exe) In security tab lower security
 					level to medium. Reopen the browser</p>
+					
+				<p>If you encounter any additional issues, feel free to contact us on <a href="mailto:konteh@devtechgroup.com">konteh@devtechgroup.com</a></p>
 			</div>
 
 		</div>
