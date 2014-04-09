@@ -52,3 +52,7 @@ $('#add_new').click(function(){
 	
 
 });
+
+$('#winners_button').click(function(){
+	fillTableWithWinners();d
+});
