@@ -38,5 +38,11 @@ function selectData(){
 	return $result;
 }
 
+function selectWinnersData(){
+	$connection = new DatabaseController();
+	$result = $connection->selectWinnersData();
+	return $result;
+}
+
 
 ?>

@@ -28,7 +28,7 @@ class DatabaseController{
         return $result;
 	}
 	
-	public function selectWinnerData(){
+	public function selectWinnersData(){
 		$result = "";
 		$query = $this->databaseHandler->query("SELECT c.candidate_id, c.firstname, c.email, c.lastname
 				FROM progresslog p

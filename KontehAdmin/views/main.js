@@ -50,9 +50,19 @@ $('#add_new').click(function(){
 		
 	}
 	
-
 });
 
-$('#winners_button').click(function(){
-	fillTableWithWinners();d
+$('#win_los_button').click(function(){
+	if($(this).data('action')=='winners')
+	{
+		fillTableWithWinners();
+		$(this).data('action', 'losers');
+		$(this).html("All");
+	}
+	else if($(this).data('action')=='losers')
+		{
+		fillTable();
+		$(this).data('action', 'winners');
+		$(this).html("Winners");
+		}
 });
