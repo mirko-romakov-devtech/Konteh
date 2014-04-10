@@ -43,7 +43,7 @@ class DatabaseController{
 	
 	public function getWinnerData($id){
 		$result = "";
-		$sql = "select c.candidate_id, c.email, FROM_UNIXTIME(p.timestamp) as timestamp, p.task_id, t.name
+		$sql = "select c.candidate_id, c.firstname, c.lastname, c.email, FROM_UNIXTIME(p.timestamp) as timestamp, p.task_id, t.name
 				from candidates c left join progresslog p on c.candidate_id = p.candidate_id left join tasks t on p.task_id = t.task_id
 				where c.candidate_id = ?
 				order by c.candidate_id,p.timestamp asc;";
@@ -86,16 +86,16 @@ class DatabaseController{
 					else{
 						$newRes->tasks[count($newRes->tasks)-1]->logLength = date_diff($tempTimestamp,$initialTaskDate);
 						$newRes->tasks[count($newRes->tasks)-1]->logCount = $taskLogCount;
-						$newRes->tasks[] = new TaskLog($res['task_id'], $res['name'], date_diff($time,$tempTimestamp));
+						$newRes->tasks[] = new TaskLog($res['task_id'], $res['name'], date_diff($time,$tempTimestamp), date_diff($time,$initialTaskDate));
 						$rowAdded = true;
-						$initialTaskDate=$tempTimestamp;
+						$initialTaskDate=$time;
 						$taskLogCount = 1;
 					}
 					$logCount++;
 				}
 			}
 			if(!$rowAdded){
-				$newResult[] = new CandidateLog($res['candidate_id'], $res['email'], new TaskLog($res['task_id'], $res['name'], date_diff($time,$tempTimestamp)));
+				$newResult[] = new CandidateLog($res['candidate_id'], $res['email'], $res['firstname'], $res['lastname'], new TaskLog($res['task_id'], $res['name'], date_diff($time,$tempTimestamp)));
 				$taskLogCount++;
 				$logCount++;
 			}
