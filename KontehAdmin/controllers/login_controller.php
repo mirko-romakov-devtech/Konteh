@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once "../models/session_model.php";
+require_once "session_model.php";
 
 function getSession(){
 	$result = "";
