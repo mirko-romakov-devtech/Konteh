@@ -1,7 +1,7 @@
 <?php
 require_once "database_controller.php";
 require_once "email_controller.php";
-require_once "EncryptionHelper.php";
+require_once "../include/EncryptionHelper.php";
 
 function getGUID(){
 	if (function_exists('com_create_guid')){
@@ -35,6 +35,12 @@ function insertData($dataArray){
 function selectData(){
 	$connection = new DatabaseController();
 	$result = $connection->selectData();
+	return $result;
+}
+
+function selectWinnersData(){
+	$connection = new DatabaseController();
+	$result = $connection->selectWinnersData();
 	return $result;
 }
 

@@ -1,6 +1,6 @@
 <?php
-require_once "candidate_model.php";
-require_once "config.php";
+require_once "../models/candidate_model.php";
+require_once "../include/config.php";
 
 class DatabaseController{
 
@@ -26,6 +26,18 @@ class DatabaseController{
 		$query->setFetchMode(PDO::FETCH_CLASS, 'Candidate');
         $result = $query->fetchAll();
         return $result;
+	}
+	
+	public function selectWinnersData(){
+		$result = "";
+		$query = $this->databaseHandler->query("SELECT c.candidate_id, c.firstname, c.email, c.lastname
+				FROM progresslog p
+				RIGHT JOIN candidates c ON c.candidate_id = p.candidate_id
+				WHERE c.candidate_id in (select candidate_id from progresslog where task_id = 7)
+				GROUP BY c.candidate_id");
+		$query->setFetchMode(PDO::FETCH_CLASS, 'Candidate');
+		$result = $query->fetchAll();
+		return $result;
 	}
 	
 	public function emptyTable(){

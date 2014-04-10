@@ -20,6 +20,18 @@ function fillTable(){
 			});
 }
 
+function fillTableWithWinners() {
+	$.post("ajax/ajax.php", {action: "selectWinnersData"}, function(data){
+		var ArrayOfObjects = JSON.parse(data);
+		var output = "<tr><th>CANDIDATE ID</th><th>FIRST NAME</th><th>LAST NAME</th><th>E-MAIL ADDRESS</th></tr>";
+		for(var i = 0; i < ArrayOfObjects.length; i++){
+			output += "<a href='#'><tr><td>"+ArrayOfObjects[i].candidate_id+"<td>"+ArrayOfObjects[i].firstname+"</td><td>"+ArrayOfObjects[i].lastname+"</td><td>"+ArrayOfObjects[i].email+"</td></tr></a>";
+		}
+
+		$('#myTable').html(output);
+	});
+}
+
 function getSession(){
 	$.post("ajax/ajax.php", {action: "getSession"}, function(data){
 		if(data == 1){

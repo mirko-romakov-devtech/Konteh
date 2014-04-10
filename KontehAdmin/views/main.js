@@ -50,5 +50,19 @@ $('#add_new').click(function(){
 		
 	}
 	
+});
 
+$('#win_los_button').click(function(){
+	if($(this).data('action')=='winners')
+	{
+		fillTableWithWinners();
+		$(this).data('action', 'losers');
+		$(this).html("All");
+	}
+	else if($(this).data('action')=='losers')
+		{
+		fillTable();
+		$(this).data('action', 'winners');
+		$(this).html("Winners");
+		}
 });

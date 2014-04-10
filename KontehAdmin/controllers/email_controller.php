@@ -1,6 +1,6 @@
 <?php
-require_once 'PHPMailerAutoload.php';
-require_once 'class.phpmailer.php';
+require_once '../PHPMailer/PHPMailerAutoload.php';
+require_once '../PHPMailer/class.phpmailer.php';
 
 class EmailController {
 
