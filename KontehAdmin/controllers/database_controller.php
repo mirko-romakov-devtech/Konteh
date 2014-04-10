@@ -1,6 +1,7 @@
 <?php
 require_once "candidate_model.php";
 require_once "config.php";
+require_once "candidate_log.php";
 
 class DatabaseController{
 
@@ -38,6 +39,52 @@ class DatabaseController{
 		$query->setFetchMode(PDO::FETCH_CLASS, 'Candidate');
 		$result = $query->fetchAll();
 		return $result;
+	}
+	
+	public function getWinnerData($id){
+		$result = "";
+		$sql = "select c.candidate_id, c.email, FROM_UNIXTIME(p.timestamp) as timestamp, p.task_id, t.name
+				from candidates c left join progresslog p on c.candidate_id = p.candidate_id left join tasks t on p.task_id = t.task_id
+				where c.candidate_id = ?
+				order by c.candidate_id,p.timestamp asc;";
+		$query = $this->databaseHandler->prepare($sql);
+		
+		$query->execute(array($id));
+		$result = $query->fetchAll(PDO::FETCH_ASSOC);
+		
+		$tempTimestamp = null;
+		$newResult = array();
+		$currentTask = 0;
+		foreach ($result as $res){
+			if($tempTimestamp==null){
+				$tempTimestamp = date_create($res['timestamp']);
+				$res['timestamp'] = 'Started at: '.$res['timestamp'];
+			}
+			else{
+				$time = date_create($res['timestamp']);
+				$res['timestamp'] =  date_diff($time,$tempTimestamp);
+				$tempTimestamp = $time;
+			}
+			$rowAdded = false;
+			foreach($newResult as $newRes){
+				if($newRes->candidate_id==$res['candidate_id']){
+					$task = $newRes->tasks[count($newRes->tasks)-1];
+					if(isset($task) && $task->task_id == $res['task_id']) {
+						
+						$task->timestamps[] = new TaskTimestampLog($res['timestamp']);
+						$rowAdded = true;
+					}
+					else{
+						$newRes->tasks[] = new TaskLog($res['task_id'], $res['name'], $res['timestamp']);
+						$rowAdded = true;
+					}
+				}
+			}
+			if(!$rowAdded){
+				$newResult[] = new CandidateLog($res['candidate_id'], $res['email'], new TaskLog($res['task_id'], $res['name'], $res['timestamp']));
+			}
+		}
+		return $newResult;
 	}
 	
 	public function emptyTable(){

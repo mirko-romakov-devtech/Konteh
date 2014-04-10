@@ -13,14 +13,14 @@ if(isset($_GET["key"])) {
 	$key = $_GET["key"];
 	$link_object = $encriptor->decryptObject($key);
 	if($link_object->GUID == null) {
-		header("Location: error.php");
+		header("Location: error.php?code=".Errors::GuidNotFound);
 	} else {
 		$dbHandler = new DBHandler();
 		$dbHandler->logProgress($link_object->GUID, Tasks::StartPage);
 	}
 }
 else{
-	header("Location: error.php");
+	header("Location: error.php?code=".Errors::KeyNotFound);
 }
 
 ?>

@@ -2,15 +2,13 @@
 session_start();
 require_once "session_model.php";
 
-function getSession(){
+function getSession() {
 	$result = "";
-	if(!isset($_SESSION[SessionModel::SESSION_CONSTANT]) || $_SESSION[SessionModel::SESSION_CONSTANT] == ""){
+	if(!isset($_SESSION[SessionModel::SESSION_CONSTANT]) || $_SESSION[SessionModel::SESSION_CONSTANT] == "") {
 		$result = "0";
-	}
-	else{
+	} else {
 		$result = "1";
 	}
-
 	return $result;
 }
 
