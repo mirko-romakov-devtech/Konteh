@@ -1,6 +1,6 @@
 <?php
-require_once "../models/candidate_model.php";
-require_once "../include/config.php";
+require_once "candidate_model.php";
+require_once "config.php";
 
 class DatabaseController{
 
@@ -38,12 +38,6 @@ class DatabaseController{
 		$query->setFetchMode(PDO::FETCH_CLASS, 'Candidate');
 		$result = $query->fetchAll();
 		return $result;
-	}
-	
-	public function emptyTable(){
-		$sql="DELETE FROM `".DB_TABLE."`";
-		$statement = $this->databaseHandler->prepare($sql);
-		$statement->execute();
 	}
 	
 	public function executeQuery($query, $params) {
