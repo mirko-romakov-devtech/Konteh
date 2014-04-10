@@ -25,10 +25,25 @@ function fillTableWithWinners() {
 		var ArrayOfObjects = JSON.parse(data);
 		var output = "<tr><th>CANDIDATE ID</th><th>FIRST NAME</th><th>LAST NAME</th><th>E-MAIL ADDRESS</th></tr>";
 		for(var i = 0; i < ArrayOfObjects.length; i++){
-			output += "<a href='#'><tr><td>"+ArrayOfObjects[i].candidate_id+"<td>"+ArrayOfObjects[i].firstname+"</td><td>"+ArrayOfObjects[i].lastname+"</td><td>"+ArrayOfObjects[i].email+"</td></tr></a>";
+			candidate_id = ArrayOfObjects[i].candidate_id;
+			output += '<tr><td><a href="#" data-toggle="modal" data-target="#winnerData" onclick="showWinner(\''+candidate_id+'\');">'+candidate_id+'</a></td><td><a href="#" data-toggle="modal" data-target="#winnerData" onclick="showWinner(\''+candidate_id+'\');">'+ArrayOfObjects[i].firstname+'</a></td><td><a href="#" data-toggle="modal" data-target="#winnerData" onclick="showWinner(\''+candidate_id+'\');">'+ArrayOfObjects[i].lastname+'</a></td><td><a href="#" data-toggle="modal" data-target="#winnerData" onclick="showWinner(\''+candidate_id+'\');">'+ArrayOfObjects[i].email+'</a></td></tr>';
 		}
 
 		$('#myTable').html(output);
+	});
+}
+
+function showWinner(candidate_id){
+	$.post("ajax/ajax.php", {action: "getWinnerData", id: candidate_id}, function(data){
+	
+	output = "<p class='head'>Candidate Name: <br/><b>Mario Kozomora </b></p>";
+	output += "<table class='table table-bordered table-striped'>";
+	output += "<tr><th>TASK NAME</th><th>COMPLETION TIME</th></tr>";
+	output += "<tr><td>"+candidate_id.trim()+"</td><td>Hello</td></tr>";
+	output += "<tr><td>"+candidate_id.trim()+"</td><td>Hello</td>";
+	output += "</table>";
+	output += "<br/> Average time per task: 3:00 min ";
+		$('#winner_results').html(output);
 	});
 }
 

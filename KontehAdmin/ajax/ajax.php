@@ -35,13 +35,19 @@ switch ($action) {
 	case 'selectData':
 		print_r(json_encode(selectData()));
 		break;
+		
 	case 'selectWinnersData' :
 		print_r(json_encode(selectWinnersData()));
 		break;
-
+		
+	case 'getWinnerData':
+		echo "Hello world";
+		break;
+		
 	case 'sendEmail':
 		sendEmail($_POST['emailData']);
 		break;
+		
 	default:
 		echo "Invalid action provided.";
 		break;

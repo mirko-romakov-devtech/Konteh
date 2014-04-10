@@ -1,7 +1,6 @@
 <div id="main">
 					<div class="sub-main">
 						<img src='images/devtech.jpg' id='logo'/>
-						
 						<button class="btn btn-primary" id="logout_button">Logout</button>
 						<button class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="add-new-button">Add new</button>
 						<button class="btn btn-primary" id="win_los_button" data-action="winners">Winners</button>
@@ -64,6 +63,23 @@
           					<div class="modal-footer">
             					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
             					<button type="button" class="btn btn-primary" id="add_new">Add</button>
+          					</div>
+        				</div>
+        			</div>
+        		</div>
+        		
+        		<div class="modal fade" id="winnerData" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      				<div class="modal-dialog">
+        				<div class="modal-content">
+          					<div class="modal-header">
+            					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            					<h4 class="modal-title" id="myModalLabel">Candidate results</h4>
+          					</div>
+          					<div class="modal-body" id="winner_results">
+
+          					</div>
+          					<div class="modal-footer">
+            					<button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
           					</div>
         				</div>
         			</div>
