@@ -35,12 +35,15 @@ function fillTableWithWinners() {
 
 function showWinner(candidate_id){
 	$.post("ajax/ajax.php", {action: "getWinnerData", id: candidate_id}, function(data){
-	
-	output = "<p class='head'>Candidate Name: <br/><b>Mario Kozomora </b></p>";
+		var ArrayOfObjects = JSON.parse(data);
+		
+	output = "<p class='head'>Candidate Email: <br/><b>"+ArrayOfObjects[0].email+"</b></p>";
 	output += "<table class='table table-bordered table-striped'>";
 	output += "<tr><th>TASK NAME</th><th>COMPLETION TIME</th></tr>";
-	output += "<tr><td>"+candidate_id.trim()+"</td><td>Hello</td></tr>";
-	output += "<tr><td>"+candidate_id.trim()+"</td><td>Hello</td>";
+	for(var i = 0; i < ArrayOfObjects[0].tasks.length; i++){
+		output += "<tr><td>"+ArrayOfObjects[0].tasks[i].name+"</td><td>Hello</td></tr>";
+	}
+	
 	output += "</table>";
 	output += "<br/> Average time per task: 3:00 min ";
 		$('#winner_results').html(output);
