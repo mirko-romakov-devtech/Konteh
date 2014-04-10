@@ -8,7 +8,7 @@ class DatabaseController{
 	private $databaseHandler;
 
 	public function __construct() {
-		$this->databaseHandler = new PDO('mysql:dbname='.DB_NAME.';host=localhost'/*.DB_HOST*/, DB_USER, DB_PASS);
+		$this->databaseHandler = new PDO('mysql:dbname='.DB_NAME.';host='.DB_HOST, DB_USER, DB_PASS);
 	}
 
 	public function insertData($params){
