@@ -4,6 +4,8 @@ class CandidateLog{
 
 	public $candidate_id;
 	public $email;
+	public $logLength;
+	public $logCount;
 	public $tasks = array();
 	
 	public function __construct($id, $email, $task){
@@ -17,6 +19,8 @@ class CandidateLog{
 class TaskLog {
 	public $task_id;
 	public $name;
+	public $logLength;
+	public $logCount;
 	public $timestamps = array();
 	
 	public function __construct($id, $name, $timestamp){

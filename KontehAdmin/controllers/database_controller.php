@@ -52,38 +52,60 @@ class DatabaseController{
 		$query->execute(array($id));
 		$result = $query->fetchAll(PDO::FETCH_ASSOC);
 		
+		
+		return $this->generateWinnerData($result);
+	}
+	
+	public function generateWinnerData($logs) {
 		$tempTimestamp = null;
 		$newResult = array();
-		$currentTask = 0;
-		foreach ($result as $res){
+		$initialTaskDate = null;
+		$taskLogCount = 0;
+		$initialDate = 0;
+		$logCount = 0;
+		foreach ($logs as $res){
+			if(!$res['timestamp'])
+				continue;
 			if($tempTimestamp==null){
 				$tempTimestamp = date_create($res['timestamp']);
-				$res['timestamp'] = 'Started at: '.$res['timestamp'];
+				$initialDate = $tempTimestamp;
+				$initialTaskDate = $tempTimestamp;
 			}
-			else{
-				$time = date_create($res['timestamp']);
-				$res['timestamp'] =  date_diff($time,$tempTimestamp);
-				$tempTimestamp = $time;
-			}
+				
+			$time = date_create($res['timestamp']);
+				
 			$rowAdded = false;
 			foreach($newResult as $newRes){
 				if($newRes->candidate_id==$res['candidate_id']){
 					$task = $newRes->tasks[count($newRes->tasks)-1];
 					if(isset($task) && $task->task_id == $res['task_id']) {
-						
-						$task->timestamps[] = new TaskTimestampLog($res['timestamp']);
+						$task->timestamps[] = new TaskTimestampLog(date_diff($time,$tempTimestamp));
 						$rowAdded = true;
+						$taskLogCount++;
 					}
 					else{
-						$newRes->tasks[] = new TaskLog($res['task_id'], $res['name'], $res['timestamp']);
+						$newRes->tasks[count($newRes->tasks)-1]->logLength = date_diff($tempTimestamp,$initialTaskDate);
+						$newRes->tasks[count($newRes->tasks)-1]->logCount = $taskLogCount;
+						$newRes->tasks[] = new TaskLog($res['task_id'], $res['name'], date_diff($time,$tempTimestamp));
 						$rowAdded = true;
+						$initialTaskDate=$tempTimestamp;
+						$taskLogCount = 1;
 					}
+					$logCount++;
 				}
 			}
 			if(!$rowAdded){
-				$newResult[] = new CandidateLog($res['candidate_id'], $res['email'], new TaskLog($res['task_id'], $res['name'], $res['timestamp']));
+				$newResult[] = new CandidateLog($res['candidate_id'], $res['email'], new TaskLog($res['task_id'], $res['name'], date_diff($time,$tempTimestamp)));
+				$taskLogCount++;
+				$logCount++;
 			}
+			$tempTimestamp = $time;
 		}
+		$newRes->tasks[count($newRes->tasks)-1]->logLength = date_diff($tempTimestamp,$initialTaskDate);
+		$newRes->tasks[count($newRes->tasks)-1]->logCount = $taskLogCount;
+		$newResult[0]->logLength = date_diff($initialDate,$tempTimestamp);
+		$newResult[0]->logCount = $logCount;
+		
 		return $newResult;
 	}
 	
