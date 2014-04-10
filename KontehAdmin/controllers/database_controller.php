@@ -84,7 +84,7 @@ class DatabaseController{
 						$taskLogCount++;
 					}
 					else{
-						$newRes->tasks[count($newRes->tasks)-1]->logLength = date_diff($tempTimestamp,$initialTaskDate);
+						$newRes->tasks[count($newRes->tasks)-1]->logLength = date_diff($tempTimestamp,$initialTaskDate)->format("%d Day(s) %H:%I:%S");;
 						$newRes->tasks[count($newRes->tasks)-1]->logCount = $taskLogCount;
 						$newRes->tasks[] = new TaskLog($res['task_id'], $res['name'], date_diff($time,$tempTimestamp), date_diff($time,$initialTaskDate));
 						$rowAdded = true;
@@ -95,15 +95,15 @@ class DatabaseController{
 				}
 			}
 			if(!$rowAdded){
-				$newResult[] = new CandidateLog($res['candidate_id'], $res['email'], $res['firstname'], $res['lastname'], new TaskLog($res['task_id'], $res['name'], date_diff($time,$tempTimestamp)));
+				$newResult[] = new CandidateLog($res['candidate_id'], $res['email'], $res['firstname'], $res['lastname'], new TaskLog($res['task_id'], $res['name'], date_diff($time,$tempTimestamp),date_diff($time,$initialTaskDate)));
 				$taskLogCount++;
 				$logCount++;
 			}
 			$tempTimestamp = $time;
 		}
-		$newRes->tasks[count($newRes->tasks)-1]->logLength = date_diff($tempTimestamp,$initialTaskDate);
+		$newRes->tasks[count($newRes->tasks)-1]->logLength = date_diff($tempTimestamp,$initialTaskDate)->format("%d Day(s) %H:%I:%S");;
 		$newRes->tasks[count($newRes->tasks)-1]->logCount = $taskLogCount;
-		$newResult[0]->logLength = date_diff($initialDate,$tempTimestamp);
+		$newResult[0]->logLength = date_diff($initialDate,$tempTimestamp)->format("%d Day(s) %H:%I:%S");;
 		$newResult[0]->logCount = $logCount;
 		
 		return $newResult;

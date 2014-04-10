@@ -31,7 +31,7 @@ class TaskLog {
 	public function __construct($id, $name, $timestamp, $timeToCompleteTask){
 		$this->task_id = $id;
 		$this->name = $name;
-		$this->timeToCompleteTask = $timeToCompleteTask;
+		$this->timeToCompleteTask = $timeToCompleteTask->format("%d Day(s) %H:%I:%S");
 		$this->timestamps[] = new TaskTimestampLog($timestamp);
 	}
 }

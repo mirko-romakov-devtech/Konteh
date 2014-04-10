@@ -36,18 +36,23 @@ function fillTableWithWinners() {
 function showWinner(candidate_id){
 	$.post("ajax/ajax.php", {action: "getWinnerData", id: candidate_id}, function(data){
 		var ArrayOfObjects = JSON.parse(data);
+		output = "<p class='head'>Candidate Name: <b>"+ArrayOfObjects[0].firstname+" "+ArrayOfObjects[0].lastname+"</b></p>";
+		output += "<p class='head'>Candidate Email: <b>"+ArrayOfObjects[0].email+"</b></p>";
+		output += "<p>Total time logged: "+ArrayOfObjects[0].logLength+"</p>";
+		output += "<table class='table table-bordered table-striped'>";
+		output += "<tr><th>TASK NAME</th><th class='text-center'>COMPLETION TIME</th></tr>";
+		var taskNames = new Array();
+		for(var i = 0; i < ArrayOfObjects[0].tasks.length; i++){
+			if (taskNames.indexOf(ArrayOfObjects[0].tasks[i].name) < 0){	
+				taskNames.push(ArrayOfObjects[0].tasks[i].name);
+				output += "<tr><td>"+ArrayOfObjects[0].tasks[i].name+"</td><td class='text-center'>"+ArrayOfObjects[0].tasks[i].timeToCompleteTask+"</td></tr>";
+			}
+		}
 		
-	output = "<p class='head'>Candidate Email: <br/><b>"+ArrayOfObjects[0].email+"</b></p>";
-	output += "<table class='table table-bordered table-striped'>";
-	output += "<tr><th>TASK NAME</th><th>COMPLETION TIME</th></tr>";
-	for(var i = 0; i < ArrayOfObjects[0].tasks.length; i++){
-		output += "<tr><td>"+ArrayOfObjects[0].tasks[i].name+"</td><td>Hello</td></tr>";
-	}
-	
-	output += "</table>";
-	output += "<br/> Average time per task: 3:00 min ";
-		$('#winner_results').html(output);
-	});
+		output += "</table>";
+		//output += "<br/> Average time per task: 3:00 min ";
+			$('#winner_results').html(output);
+		});
 }
 
 function getSession(){
