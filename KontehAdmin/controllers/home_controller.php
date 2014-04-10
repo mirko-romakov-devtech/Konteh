@@ -44,5 +44,11 @@ function selectWinnersData(){
 	return $result;
 }
 
+function getWinnerData($id){
+	$connection = new DatabaseController();
+	$result = $connection->getWinnerData($id);
+	return $result;
+}
+
 
 ?>

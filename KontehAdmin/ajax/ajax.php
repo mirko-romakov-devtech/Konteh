@@ -39,6 +39,10 @@ switch ($action) {
 		print_r(json_encode(selectWinnersData()));
 		break;
 
+	case 'getWinnerData' :
+		print_r(json_encode(getWinnerData($_POST['id'])));
+		break;
+
 	case 'sendEmail':
 		sendEmail($_POST['emailData']);
 		break;
