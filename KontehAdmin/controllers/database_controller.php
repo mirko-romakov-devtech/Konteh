@@ -60,7 +60,8 @@ class DatabaseController{
 		
 		$result = $query->fetchAll(PDO::FETCH_ASSOC);
 		
-		return $this->generateWinnerData($result, $sortTask);
+		//return $this->generateWinnerData($result, $sortTask);
+		return $this->addRanksToData($this->generateWinnerData($result, $sortTask), $sortTask);
 	}
 	
 	public function generateWinnerData($logs, $sortTask) {
@@ -108,7 +109,7 @@ class DatabaseController{
 					else{
 						$newRes->tasks[count($newRes->tasks)-1]->logLength = date_diff($tempTimestamp,$initialTaskDate)->format("%d Day(s) %H:%I:%S");
 						$newRes->tasks[count($newRes->tasks)-1]->logCount = $taskLogCount;
-						$newRes->tasks[] = new TaskLog($res['task_id'], $res['name'], date_diff($time,$tempTimestamp), date_diff($time,$initialTaskDate));
+						$newRes->tasks[] = new TaskLog($res['task_id'], $res['name'], date_diff($time,$tempTimestamp),date_diff($time,$initialTaskDate)->format("%d%H%I%S"), date_diff($time,$initialTaskDate));
 						if(abs($sortTask)==$res['task_id'])
 							$newResult[count($newResult)-1]->sortVal = date_diff($time,$initialTaskDate)->format("%d%H%I%S");
 						$rowAdded = true;
@@ -120,7 +121,7 @@ class DatabaseController{
 				}
 			}
 			if(!$rowAdded){
-				$newResult[] = new CandidateLog($res['candidate_id'], $res['email'], $res['firstname'], $res['lastname'], new TaskLog($res['task_id'], $res['name'], date_diff($time,$tempTimestamp),date_diff($time,$initialTaskDate)));
+				$newResult[] = new CandidateLog($res['candidate_id'], $res['email'], $res['firstname'], $res['lastname'], new TaskLog($res['task_id'], $res['name'], date_diff($time,$tempTimestamp), date_diff($time,$initialTaskDate)->format("%d%H%I%S"),date_diff($time,$initialTaskDate)));
 				if(abs($sortTask)==$res['task_id'])
 					$newResult[count($newResult)-1]->sortVal = date_diff($time,$initialTaskDate)->format("%d%H%I%S");
 				$taskLogCount++;
@@ -132,39 +133,104 @@ class DatabaseController{
 		$newRes->tasks[count($newRes->tasks)-1]->logCount = $taskLogCount;
 		$newResult[0]->logLength = date_diff($initialDate,$tempTimestamp)->format("%d Day(s) %H:%I:%S");;
 		$newResult[0]->logCount = $logCount;
-		if(!$sortTask)
-			return $newResult;
-		$orderedCandidates = array();
+		
+		
+		return $newResult;
+	}
+	
+	public function addRanksToData($candidates, $sortTask = false){
 		$minID = -1;
 		$minVal = -1;
-		$asdf = 0;
-		while(count($orderedCandidates)< count($newResult)) {
-			for ($i=0;$i<count($newResult);$i++){
+		$tempList = array();
+		for($task_id=1;$task_id<=7;$task_id++) {
+			$tempList = array();
+
+			while(count($tempList) < count($candidates)) {
+				for ($i=0;$i<count($candidates);$i++){
+					$candidateSorted = false;
+					foreach($tempList as $is) {
+						if($is->candidate_id == $candidates[$i]->candidate_id){
+							$candidateSorted = true;
+							continue;
+						}
+			
+					}
+					if($candidateSorted) continue;
+					$value = 0;
+					$addedTimeVal = false;
+					foreach($candidates[$i]->tasks as $task) {
+						if($task->task_id == $task_id) {
+							if($minID == -1) {
+								$minID = $i;
+								$minVal = $task->timeVal;
+							}
+							
+							else if($task->timeVal<$minVal) {
+								$minID = $i;
+								$minVal = $task->timeVal;
+							}
+							$addedTimeVal = true;
+						}
+					}
+					if(!$addedTimeVal) {
+						$minID = $i;
+						$minVal = 0000000;
+					}
+				}
+				$tempList[] = $candidates[$minID];
+				$minID = -1;
+				$minVal = -1;
+			}
+			$counter = 1;
+			foreach($tempList as $oc) {
+				foreach($oc->tasks as $task) {
+					if($task->task_id == $task_id) {
+						$task->rank = $counter;
+						$counter++;
+					}
+				}
+			}
+			$candidates = $tempList;
+			
+				
+		}
+		
+		$minID = -1;
+		$minVal = -1;
+		
+		if(!$sortTask)
+			return $candidates;
+		
+		$orderedCandidates = array();
+		
+		while(count($orderedCandidates)< count($candidates)) {
+			for ($i=0;$i<count($candidates);$i++){
 				$candidateSorted = false;
 				foreach($orderedCandidates as $is) {
-					if($is->candidate_id == $newResult[$i]->candidate_id){
+					if($is->candidate_id == $candidates[$i]->candidate_id){
 						$candidateSorted = true;
 						continue;
 					}
-					
+		
 				}
 				if($candidateSorted) continue;
 				if($minID == -1) {
 					$minID = $i;
-					$minVal = $newResult[$i]->sortVal;
+					$minVal = $candidates[$i]->sortVal;
 				}
-				
-				else if($newResult[$i]->sortVal<$minVal) {
+					
+				else if($candidates[$i]->sortVal<$minVal) {
 					$minID = $i;
-					$minVal = $newResult[$i]->sortVal;
+					$minVal = $candidates[$i]->sortVal;
 				}
 			}
-			$orderedCandidates[] = $newResult[$minID];
+			$orderedCandidates[] = $candidates[$minID];
 			$minID = -1;
 			$minVal = -1;
 		}
 		
 		return $orderedCandidates;
+		
 	}
 	
 	public function emptyTable(){
