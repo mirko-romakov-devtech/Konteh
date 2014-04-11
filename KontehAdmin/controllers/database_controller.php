@@ -41,7 +41,7 @@ class DatabaseController{
 		return $result;
 	}
 	
-	public function getWinnerData($id = false){
+	public function getWinnerData($id = false, $sortTask){
 		
 		if($id == true) $queryPart = " where c.candidate_id = ? ";
 		else $queryPart = " where c.candidate_id in (select candidate_id from progresslog where task_id = 7) ";
@@ -60,10 +60,10 @@ class DatabaseController{
 		
 		$result = $query->fetchAll(PDO::FETCH_ASSOC);
 		
-		return $this->generateWinnerData($result);
+		return $this->generateWinnerData($result, $sortTask);
 	}
 	
-	public function generateWinnerData($logs) {
+	public function generateWinnerData($logs, $sortTask) {
 		$candidate_id = null;
 		$tempTimestamp = null;
 		$newResult = array();
@@ -102,20 +102,27 @@ class DatabaseController{
 						$task->timestamps[] = new TaskTimestampLog(date_diff($time,$tempTimestamp));
 						$rowAdded = true;
 						$taskLogCount++;
+						if(abs($sortTask)==$res['task_id'])
+							$newResult[count($newResult)-1]->sortVal = date_diff($time,$initialTaskDate)->format("%d%H%I%S");
 					}
 					else{
 						$newRes->tasks[count($newRes->tasks)-1]->logLength = date_diff($tempTimestamp,$initialTaskDate)->format("%d Day(s) %H:%I:%S");
 						$newRes->tasks[count($newRes->tasks)-1]->logCount = $taskLogCount;
 						$newRes->tasks[] = new TaskLog($res['task_id'], $res['name'], date_diff($time,$tempTimestamp), date_diff($time,$initialTaskDate));
+						if(abs($sortTask)==$res['task_id'])
+							$newResult[count($newResult)-1]->sortVal = date_diff($time,$initialTaskDate)->format("%d%H%I%S");
 						$rowAdded = true;
 						$initialTaskDate=$time;
 						$taskLogCount = 1;
 					}
+					
 					$logCount++;
 				}
 			}
 			if(!$rowAdded){
 				$newResult[] = new CandidateLog($res['candidate_id'], $res['email'], $res['firstname'], $res['lastname'], new TaskLog($res['task_id'], $res['name'], date_diff($time,$tempTimestamp),date_diff($time,$initialTaskDate)));
+				if(abs($sortTask)==$res['task_id'])
+					$newResult[count($newResult)-1]->sortVal = date_diff($time,$initialTaskDate)->format("%d%H%I%S");
 				$taskLogCount++;
 				$logCount++;
 			}
@@ -126,7 +133,37 @@ class DatabaseController{
 		$newResult[0]->logLength = date_diff($initialDate,$tempTimestamp)->format("%d Day(s) %H:%I:%S");;
 		$newResult[0]->logCount = $logCount;
 		
-		return $newResult;
+		$orderedCandidates = array();
+		$minID = -1;
+		$minVal = -1;
+		$asdf = 0;
+		while(count($orderedCandidates)< count($newResult)) {
+			for ($i=0;$i<count($newResult);$i++){
+				$candidateSorted = false;
+				foreach($orderedCandidates as $is) {
+					if($is->candidate_id == $newResult[$i]->candidate_id){
+						$candidateSorted = true;
+						continue;
+					}
+					
+				}
+				if($candidateSorted) continue;
+				if($minID == -1) {
+					$minID = $i;
+					$minVal = $newResult[$i]->sortVal;
+				}
+				
+				else if($newResult[$i]->sortVal<$minVal) {
+					$minID = $i;
+					$minVal = $newResult[$i]->sortVal;
+				}
+			}
+			$orderedCandidates[] = $newResult[$minID];
+			$minID = -1;
+			$minVal = -1;
+		}
+		
+		return $orderedCandidates;
 	}
 	
 	public function emptyTable(){

@@ -8,6 +8,7 @@ class CandidateLog{
 	public $lastname;
 	public $logLength;
 	public $logCount;
+	public $sortVal;
 	public $tasks = array();
 	
 	public function __construct($id, $email, $firstname, $lastname, $task){

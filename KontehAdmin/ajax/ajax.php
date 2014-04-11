@@ -44,7 +44,7 @@ switch ($action) {
 		break;
 		
 	case 'getResults' :
-		print_r(json_encode(getResults()));
+		print_r(json_encode(getResults($_POST['task'])));
 		break;
 
 	case 'sendEmail':

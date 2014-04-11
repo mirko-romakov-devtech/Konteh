@@ -50,9 +50,9 @@ function getWinnerData($id){
 	return $result;
 }
 
-function getResults(){
+function getResults($task){
 	$connection = new DatabaseController();
-	$result = $connection->getWinnerData();
+	$result = $connection->getWinnerData(false,$task);
 	return $result;
 }
 
