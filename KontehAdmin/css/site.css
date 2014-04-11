@@ -87,3 +87,6 @@
 .modal-dialog-results{
 	width: 1100px;
 }
+.sorted {
+	font-weight: bold;
+}
