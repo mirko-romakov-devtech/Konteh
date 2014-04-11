@@ -58,7 +58,7 @@ function showWinner(candidate_id){
 function returnData(data){
 	var ArrayOfObjects = JSON.parse(data);
 	var output = "<table class='table table-bordered table-striped results_table'>";
-	output += "<tr><th>CANDIDATE NAME</th><th class='text-center'><a href='#' onclick='winner_sort(1);'>VISIT INIT PAGE</a></th><th class='text-center'><a href='#' onclick='winner_sort(2);'>GET CREDENTIALS</a></th><th class='text-center'><a href='#' onclick='winner_sort(3);'>CREATE SERVER</a></th><th class='text-center'><a href='#' onclick='winner_sort(4);'>FIND VNC CREDENTIALS</a></th><th class='text-center'><a href='#' onclick='winner_sort(5);'>OPEN VNC CONNECTION</a></th><th class='text-center'><a href='#' onclick='winner_sort(6);'>SSH CONNECT</a></th><th class='text-center'><a href='#' onclick='winner_sort(7);'>FIND ACTIVATION LINK</a></th></tr>";
+	output += "<tr><th>CANDIDATE NAME</th><th class='text-center'><a href='#' onclick='winner_sort(2);'>VISIT INIT PAGE</a></th><th class='text-center'><a href='#' onclick='winner_sort(1);'>GET CREDENTIALS</a></th><th class='text-center'><a href='#' onclick='winner_sort(3);'>CREATE SERVER</a></th><th class='text-center'><a href='#' onclick='winner_sort(4);'>FIND VNC CREDENTIALS</a></th><th class='text-center'><a href='#' onclick='winner_sort(5);'>OPEN VNC CONNECTION</a></th><th class='text-center'><a href='#' onclick='winner_sort(6);'>SSH CONNECT</a></th><th class='text-center'><a href='#' onclick='winner_sort(7);'>FIND ACTIVATION LINK</a></th></tr>";
 	for(var i = 0; i < ArrayOfObjects.length; i++){
 		var taskNames = new Array();
 			output += "<tr><td>"+ArrayOfObjects[i].firstname+" "+ArrayOfObjects[i].lastname+"</td>";

@@ -44,7 +44,7 @@ switch ($action) {
 		break;
 		
 	case 'getResults' :
-		print_r(json_encode(getResults($_POST['task'])));
+		print_r(json_encode(getResults()));
 		break;
 	
 	case 'sortResults':

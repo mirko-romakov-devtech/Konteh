@@ -41,7 +41,7 @@ class DatabaseController{
 		return $result;
 	}
 	
-	public function getWinnerData($id = false, $sortTask){
+	public function getWinnerData($id = false, $sortTask = false){
 		
 		if($id == true) $queryPart = " where c.candidate_id = ? ";
 		else $queryPart = " where c.candidate_id in (select candidate_id from progresslog where task_id = 7) ";
@@ -132,7 +132,8 @@ class DatabaseController{
 		$newRes->tasks[count($newRes->tasks)-1]->logCount = $taskLogCount;
 		$newResult[0]->logLength = date_diff($initialDate,$tempTimestamp)->format("%d Day(s) %H:%I:%S");;
 		$newResult[0]->logCount = $logCount;
-		
+		if(!$sortTask)
+			return $newResult;
 		$orderedCandidates = array();
 		$minID = -1;
 		$minVal = -1;
