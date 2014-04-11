@@ -41,22 +41,30 @@ class DatabaseController{
 		return $result;
 	}
 	
-	public function getWinnerData($id){
+	public function getWinnerData($id = false){
+		
+		if($id == true) $queryPart = " where c.candidate_id = ? ";
+		else $queryPart = " where c.candidate_id in (select candidate_id from progresslog where task_id = 7) ";
+		
 		$result = "";
 		$sql = "select c.candidate_id, c.firstname, c.lastname, c.email, FROM_UNIXTIME(p.timestamp) as timestamp, p.task_id, t.name
 				from candidates c left join progresslog p on c.candidate_id = p.candidate_id left join tasks t on p.task_id = t.task_id
-				where c.candidate_id = ?
+				".$queryPart."
+				group by c.candidate_id, p.task_id
 				order by c.candidate_id,p.timestamp asc;";
+		
 		$query = $this->databaseHandler->prepare($sql);
 		
-		$query->execute(array($id));
-		$result = $query->fetchAll(PDO::FETCH_ASSOC);
+		if($id == true) $query->execute(array($id));
+		else $query->execute();
 		
+		$result = $query->fetchAll(PDO::FETCH_ASSOC);
 		
 		return $this->generateWinnerData($result);
 	}
 	
 	public function generateWinnerData($logs) {
+		$candidate_id = null;
 		$tempTimestamp = null;
 		$newResult = array();
 		$initialTaskDate = null;
@@ -64,6 +72,18 @@ class DatabaseController{
 		$initialDate = 0;
 		$logCount = 0;
 		foreach ($logs as $res){
+			if($candidate_id==null){
+				$candidate_id = $res['candidate_id'];
+			}
+
+			if($candidate_id!=$res['candidate_id']) {
+				$tempTimestamp = null;
+				$initialTaskDate = null;
+				$taskLogCount = 0;
+				$initialDate = 0;
+				$logCount = 0;
+				$candidate_id = $res['candidate_id'];
+			}
 			if(!$res['timestamp'])
 				continue;
 			if($tempTimestamp==null){
@@ -84,7 +104,7 @@ class DatabaseController{
 						$taskLogCount++;
 					}
 					else{
-						$newRes->tasks[count($newRes->tasks)-1]->logLength = date_diff($tempTimestamp,$initialTaskDate)->format("%d Day(s) %H:%I:%S");;
+						$newRes->tasks[count($newRes->tasks)-1]->logLength = date_diff($tempTimestamp,$initialTaskDate)->format("%d Day(s) %H:%I:%S");
 						$newRes->tasks[count($newRes->tasks)-1]->logCount = $taskLogCount;
 						$newRes->tasks[] = new TaskLog($res['task_id'], $res['name'], date_diff($time,$tempTimestamp), date_diff($time,$initialTaskDate));
 						$rowAdded = true;
@@ -124,6 +144,6 @@ class DatabaseController{
 }
 
 //$connection = new DatabaseController();
-//print_r($connection->selectData());
+//print_r($connection->getWinnerData("{0912FBEC-F8C9-7EEB-4463-31EE55C2809E}"));
 
 ?>

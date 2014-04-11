@@ -50,5 +50,10 @@ function getWinnerData($id){
 	return $result;
 }
 
+function getResults(){
+	$connection = new DatabaseController();
+	$result = $connection->getWinnerData();
+	return $result;
+}
 
 ?>

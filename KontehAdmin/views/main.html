@@ -3,7 +3,8 @@
 						<img src='images/devtech.jpg' id='logo'/>
 						<button class="btn btn-primary" id="logout_button">Logout</button>
 						<button class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="add-new-button">Add new</button>
-						<button class="btn btn-primary" id="win_los_button" data-action="winners">Winners</button>
+						<button class="btn btn-primary" id="win_los_button" data-action="winners">Show Winners</button>
+						<button class="btn btn-primary" id="results_button" data-toggle="modal" data-target="#results">Show Results</button>
 						<div style="clear: both;"></div>
 						<div class="table-div">
 							<table class="table table-striped mytable" id="myTable">
@@ -76,6 +77,23 @@
             					<h4 class="modal-title" id="myModalLabel">Candidate results</h4>
           					</div>
           					<div class="modal-body" id="winner_results">
+
+          					</div>
+          					<div class="modal-footer">
+            					<button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+          					</div>
+        				</div>
+        			</div>
+        		</div>
+        		
+        		<div class="modal fade results" id="results" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      				<div class="modal-dialog modal-dialog-results">
+        				<div class="modal-content">
+          					<div class="modal-header">
+            					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            					<h4 class="modal-title" id="myModalLabel">Candidates results</h4>
+          					</div>
+          					<div class="modal-body" id="winners_results">
 
           					</div>
           					<div class="modal-footer">

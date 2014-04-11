@@ -57,12 +57,18 @@ $('#win_los_button').click(function(){
 	{
 		fillTableWithWinners();
 		$(this).data('action', 'losers');
-		$(this).html("All");
+		$(this).html("Show All");
 	}
 	else if($(this).data('action')=='losers')
 		{
 		fillTable();
 		$(this).data('action', 'winners');
-		$(this).html("Winners");
+		$(this).html("Show Winners");
 		}
+});
+
+$('#results_button').click(function(){
+	//alert("hello");
+	showResults();
+	
 });
