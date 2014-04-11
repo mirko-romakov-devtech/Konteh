@@ -68,7 +68,5 @@ $('#win_los_button').click(function(){
 });
 
 $('#results_button').click(function(){
-	//alert("hello");
 	showResults();
-	
 });

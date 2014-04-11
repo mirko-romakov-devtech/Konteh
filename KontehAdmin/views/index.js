@@ -55,34 +55,47 @@ function showWinner(candidate_id){
 		});
 }
 
+function returnData(data){
+	var ArrayOfObjects = JSON.parse(data);
+	var output = "<table class='table table-bordered table-striped results_table'>";
+	output += "<tr><th>CANDIDATE NAME</th><th class='text-center'><a href='#' onclick='winner_sort(1);'>VISIT INIT PAGE</a></th><th class='text-center'><a href='#' onclick='winner_sort(2);'>GET CREDENTIALS</a></th><th class='text-center'><a href='#' onclick='winner_sort(3);'>CREATE SERVER</a></th><th class='text-center'><a href='#' onclick='winner_sort(4);'>FIND VNC CREDENTIALS</a></th><th class='text-center'><a href='#' onclick='winner_sort(5);'>OPEN VNC CONNECTION</a></th><th class='text-center'><a href='#' onclick='winner_sort(6);'>SSH CONNECT</a></th><th class='text-center'><a href='#' onclick='winner_sort(7);'>FIND ACTIVATION LINK</a></th></tr>";
+	for(var i = 0; i < ArrayOfObjects.length; i++){
+		var taskNames = new Array();
+			output += "<tr><td>"+ArrayOfObjects[i].firstname+" "+ArrayOfObjects[i].lastname+"</td>";
+			var tasks = new Array("2","1","3","4","5","6","7");
+			for(var k = 0; k<tasks.length;k++)
+			{
+				var hasTime = false;
+				for(var j = 0; j < ArrayOfObjects[i].tasks.length; j++){
+						if(ArrayOfObjects[i].tasks[j].task_id == tasks[k]) {
+							output += "<td style='white-space: nowrap;'>"+ArrayOfObjects[i].tasks[j].timeToCompleteTask+"</td>";
+							hasTime = true;
+							continue;
+						}
+				}
+				if(!hasTime)
+					output+="<td></td>";
+			}
+			output += "</tr>";
+	}
+	
+	output += "</table>";
+	return output;
+}
+
 function showResults(){
 	$.post("ajax/ajax.php", {action: "getResults"}, function(data){
-		var ArrayOfObjects = JSON.parse(data);
-		var output = "<table class='table table-bordered table-striped results_table'>";
-		output += "<tr><th>CANDIDATE NAME</th><th class='text-center'>VISIT INIT PAGE</th><th class='text-center'>GET CREDENTIALS</th><th class='text-center'>CREATE SERVER</th><th class='text-center'>FIND VNC CREDENTIALS</th><th class='text-center'>OPEN VNC CONNECTION</th><th class='text-center'>SSH CONNECT</th><th class='text-center'>FIND ACTIVATION LINK</th></tr>";
-		for(var i = 0; i < ArrayOfObjects.length; i++){
-			var taskNames = new Array();
-				output += "<tr><td>"+ArrayOfObjects[i].firstname+" "+ArrayOfObjects[i].lastname+"</td>";
-				var tasks = new Array("2","1","3","4","5","6","7");
-				for(var k = 0; k<tasks.length;k++)
-				{
-					var hasTime = false;
-					for(var j = 0; j < ArrayOfObjects[i].tasks.length; j++){
-							if(ArrayOfObjects[i].tasks[j].task_id == tasks[k]) {
-								output += "<td style='white-space: nowrap;'>"+ArrayOfObjects[i].tasks[j].timeToCompleteTask+"</td>";
-								hasTime = true;
-								continue;
-							}
-					}
-					if(!hasTime)
-						output+="<td></td>";
-				}
-				output += "</tr>";
-		}
-		
-		output += "</table>";
+		output = returnData(data);
 		$('#winners_results').html(output);
 		});
+}
+
+function winner_sort(number){
+	$.post("ajax/ajax.php", {action: "sortResults", task: number}, function(data){
+		output = returnData(data);
+		$('#winners_results').html(output);
+	});
+	//alert(number);
 }
 
 function getSession(){

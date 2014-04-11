@@ -56,4 +56,10 @@ function getResults(){
 	return $result;
 }
 
+function sortResults($number){
+	$connection = new DatabaseController();
+	$result = $connection->getWinnerData(false, $number);
+	return $result;
+}
+
 ?>

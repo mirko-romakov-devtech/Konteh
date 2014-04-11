@@ -46,6 +46,10 @@ switch ($action) {
 	case 'getResults' :
 		print_r(json_encode(getResults()));
 		break;
+	
+	case 'sortResults':
+		print_r(json_encode(sortResults($_POST['task'])));
+		break;
 
 	case 'sendEmail':
 		sendEmail($_POST['emailData']);
