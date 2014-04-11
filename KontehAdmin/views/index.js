@@ -45,7 +45,7 @@ function showWinner(candidate_id){
 		for(var i = 0; i < ArrayOfObjects[0].tasks.length; i++){
 			if (taskNames.indexOf(ArrayOfObjects[0].tasks[i].name) < 0){	
 				taskNames.push(ArrayOfObjects[0].tasks[i].name);
-				output += "<tr><td>"+ArrayOfObjects[0].tasks[i].name+"</td><td class='text-center'>"+ArrayOfObjects[0].tasks[i].timeToCompleteTask+"</td></tr>";
+				output += "<tr><td>"+ArrayOfObjects[0].tasks[i].name+"</td><td class='text-center'>"+ArrayOfObjects[0].tasks[i].timeToCompleteTask+" ("+ArrayOfObjects[i].tasks[j].rank+")</td></tr>";
 			}
 		}
 		
@@ -63,6 +63,7 @@ $(document).on("click", ".sortable", function() {
 		output = returnData(data);
 		$('#winners_table tbody').html(output);
 		element.addClass("sorted");
+		//element.append("&#x25BC;");
 	});
 });
 
@@ -86,7 +87,7 @@ function returnData(data){
 				var hasTime = false;
 				for(var j = 0; j < ArrayOfObjects[i].tasks.length; j++){
 						if(ArrayOfObjects[i].tasks[j].task_id == tasks[k]) {
-							output += "<td style='white-space: nowrap;'>"+ArrayOfObjects[i].tasks[j].timeToCompleteTask+"</td>";
+							output += "<td style='white-space: nowrap;'>"+ArrayOfObjects[i].tasks[j].timeToCompleteTask+" ("+ArrayOfObjects[i].tasks[j].rank+")</td>";
 							hasTime = true;
 							continue;
 						}
