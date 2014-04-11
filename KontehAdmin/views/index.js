@@ -55,10 +55,28 @@ function showWinner(candidate_id){
 		});
 }
 
+$(document).on("click", ".sortable", function() {
+	var element = $(this);
+	var taskID = element.data('id');
+	$.post("ajax/ajax.php", {action: "sortResults", task: taskID}, function(data){
+		$(".sortable").removeClass("sorted");
+		output = returnData(data);
+		$('#winners_table tbody').html(output);
+		element.addClass("sorted");
+	});
+});
+
 function returnData(data){
 	var ArrayOfObjects = JSON.parse(data);
-	var output = "<table class='table table-bordered table-striped results_table'>";
-	output += "<tr><th>CANDIDATE NAME</th><th class='text-center'><a href='#'>VISIT INIT PAGE</a></th><th class='text-center'><a href='#' onclick='winner_sort(1);'>GET CREDENTIALS</a></th><th class='text-center'><a href='#' onclick='winner_sort(3);'>CREATE SERVER</a></th><th class='text-center'><a href='#' onclick='winner_sort(4);'>FIND VNC CREDENTIALS</a></th><th class='text-center'><a href='#' onclick='winner_sort(5);'>OPEN VNC CONNECTION</a></th><th class='text-center'><a href='#' onclick='winner_sort(6);'>SSH CONNECT</a></th><th class='text-center'><a href='#' onclick='winner_sort(7);'>FIND ACTIVATION LINK</a></th></tr>";
+	var output = "";
+//	var output = "<table class='table table-bordered table-striped results_table'>";
+//	output += "<tr><th>CANDIDATE NAME</th><th class='text-center'><a href='#' class='sortable' data-id='2'>VISIT INIT PAGE</a></th>" +
+//			"<th class='text-center'><a href='#' class='sortable' data-id='1'>GET CREDENTIALS</a></th>" +
+//			"<th class='text-center'><a href='#' class='sortable' data-id='3'>CREATE SERVER</a></th>" +
+//			"<th class='text-center'><a href='#' class='sortable' data-id='4'>FIND VNC CREDENTIALS</a></th>" +
+//			"<th class='text-center'><a href='#' class='sortable' data-id='5'>OPEN VNC CONNECTION</a></th>" +
+//			"<th class='text-center'><a href='#' class='sortable' data-id='6'>SSH CONNECT</a></th>" +
+//			"<th class='text-center'><a href='#' class='sortable' data-id='7'>FIND ACTIVATION LINK</a></th></tr>";
 	for(var i = 0; i < ArrayOfObjects.length; i++){
 		var taskNames = new Array();
 			output += "<tr><td>"+ArrayOfObjects[i].firstname+" "+ArrayOfObjects[i].lastname+"</td>";
@@ -79,23 +97,22 @@ function returnData(data){
 			output += "</tr>";
 	}
 	
-	output += "</table>";
+//	output += "</table>";
 	return output;
 }
 
 function showResults(){
 	$.post("ajax/ajax.php", {action: "getResults"}, function(data){
 		output = returnData(data);
-		$('#winners_results').html(output);
-		});
+		$('#winners_table tbody').html(output);
+	});
 }
 
 function winner_sort(number){
 	$.post("ajax/ajax.php", {action: "sortResults", task: number}, function(data){
 		output = returnData(data);
-		$('#winners_results').html(output);
+		$('#winners_table tbody').html(output);
 	});
-	//alert(number);
 }
 
 function getSession(){

@@ -1,110 +1,143 @@
 <div id="main">
-					<div class="sub-main">
-						<img src='images/devtech.png' id='logo'/>
-						<button class="btn btn-primary" id="logout_button">Logout</button>
-						<button class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="add-new-button">Add new</button>
-						<button class="btn btn-primary" id="win_los_button" data-action="winners">Show Winners</button>
-						<button class="btn btn-primary" id="results_button" data-toggle="modal" data-target="#results">Show Results</button>
-						<div style="clear: both;"></div>
-						<div class="table-div">
-							<table class="table table-striped mytable" id="myTable">
-								
+	<div class="sub-main">
+		<img src='images/devtech.jpg' id='logo' />
+		<button class="btn btn-primary" id="logout_button">Logout</button>
+		<button class="btn btn-primary" data-toggle="modal"
+			data-target="#myModal" id="add-new-button">Add new</button>
+		<button class="btn btn-primary" id="win_los_button"
+			data-action="winners">Show Winners</button>
+		<button class="btn btn-primary" id="results_button"
+			data-toggle="modal" data-target="#results">Show Results</button>
+		<div style="clear: both;"></div>
+		<div class="table-div">
+			<table class="table table-striped mytable" id="myTable">
 
-							</table>
+
+			</table>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel">Add new candidate</h4>
+			</div>
+			<div class="modal-body">
+				<!-- ADD NEW COMPETITOR -->
+
+				<form class="form-horizontal">
+
+					<!-- email address -->
+					<div class="form-group">
+						<label for="email" class="col-sm-2 control-label">E-mail</label>
+						<div class="col-sm-10">
+							<input type="email" id="email" name="email" class="form-control"
+								required />
 						</div>
 					</div>
-				</div>
+					<!-- fist name -->
+					<div class="form-group">
+						<label for="firstname" class="col-sm-2 control-label">First
+							Name</label>
+						<div class="col-sm-10">
+							<input type="text" id="firstname" name="firstname"
+								class="form-control" required />
+						</div>
+					</div>
 
-				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      				<div class="modal-dialog">
-        				<div class="modal-content">
-          					<div class="modal-header">
-            					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            					<h4 class="modal-title" id="myModalLabel">Add new candidate</h4>
-          					</div>
-          					<div class="modal-body">
-          						<!-- ADD NEW COMPETITOR -->
+					<!-- last name -->
+					<div class="form-group">
+						<label for="lastname" class="col-sm-2 control-label">Last
+							Name</label>
+						<div class="col-sm-10">
+							<input type="text" id="lastname" name="lastname"
+								class="form-control" required />
+						</div>
+					</div>
 
-          						<form class="form-horizontal">
+					<!-- notes -->
+					<div class="form-group">
+						<label for="notes" class="col-sm-2 control-label">Notes</label>
+						<div class="col-sm-10">
+							<textarea class="form-control" id="notes"></textarea>
+						</div>
+					</div>
 
-									<!-- email address -->
-							        <div class="form-group">
-							          <label for="email" class="col-sm-2 control-label">E-mail</label>
-							          <div class="col-sm-10">
-							          		 <input type="email" id="email" name="email" class="form-control" required/>
-							          </div>
-							        </div>
-          							<!-- fist name -->
-          							<div class="form-group">
-							          <label for="firstname" class="col-sm-2 control-label">First Name</label>
-							          <div class="col-sm-10">
-							          		<input type="text" id="firstname" name="firstname" class="form-control" required/>
-							          </div>
-							        </div>
+				</form>
 
-							        <!-- last name -->
-          							<div class="form-group">
-							          <label for="lastname" class="col-sm-2 control-label">Last Name</label>
-							          <div class="col-sm-10">
-							          		<input type="text" id="lastname" name="lastname" class="form-control" required/>
-							          </div>
-							        </div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+				<button type="button" class="btn btn-primary" id="add_new">Add</button>
+			</div>
+		</div>
+	</div>
+</div>
 
-							        <!-- notes -->
-							        <div class="form-group">
-							          <label for="notes" class="col-sm-2 control-label">Notes</label>
-							          <div class="col-sm-10">
-							          		<textarea class="form-control" id="notes"></textarea>
-							          </div>
-							        </div>
+<div class="modal fade" id="winnerData" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel">Candidate results</h4>
+			</div>
+			<div class="modal-body" id="winner_results"></div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+			</div>
+		</div>
+	</div>
+</div>
 
-          						</form>
+<div class="modal fade results" id="results" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-results">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel">Candidates results</h4>
+			</div>
+			<div class="modal-body" id="winners_results">
+				<table id="winners_table"
+					class='table table-bordered table-striped results_table'>
+					<thead>
+						<tr>
+							<th>CANDIDATE NAME</th>
+							<th class='text-center'><a href='#' class='sortable'
+								data-id='2'>VISIT INIT PAGE</a></th>
+							<th class='text-center'><a href='#' class='sortable'
+								data-id='1'>GET CREDENTIALS</a></th>
+							<th class='text-center'><a href='#' class='sortable'
+								data-id='3'>CREATE SERVER</a></th>
+							<th class='text-center'><a href='#' class='sortable'
+								data-id='4'>FIND VNC CREDENTIALS</a></th>
+							<th class='text-center'><a href='#' class='sortable'
+								data-id='5'>OPEN VNC CONNECTION</a></th>
+							<th class='text-center'><a href='#' class='sortable'
+								data-id='6'>SSH CONNECT</a></th>
+							<th class='text-center'><a href='#' class='sortable'
+								data-id='7'>FIND ACTIVATION LINK</a></th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+			</div>
+		</div>
+	</div>
+</div>
 
-          					</div>
-          					<div class="modal-footer">
-            					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-            					<button type="button" class="btn btn-primary" id="add_new">Add</button>
-          					</div>
-        				</div>
-        			</div>
-        		</div>
-        		
-        		<div class="modal fade" id="winnerData" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      				<div class="modal-dialog">
-        				<div class="modal-content">
-          					<div class="modal-header">
-            					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            					<h4 class="modal-title" id="myModalLabel">Candidate results</h4>
-          					</div>
-          					<div class="modal-body" id="winner_results">
-
-          					</div>
-          					<div class="modal-footer">
-            					<button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
-          					</div>
-        				</div>
-        			</div>
-        		</div>
-        		
-        		<div class="modal fade results" id="results" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      				<div class="modal-dialog modal-dialog-results">
-        				<div class="modal-content">
-          					<div class="modal-header">
-            					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            					<h4 class="modal-title" id="myModalLabel">Candidates results</h4>
-          					</div>
-          					<div class="modal-body" id="winners_results">
-
-          					</div>
-          					<div class="modal-footer">
-            					<button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
-          					</div>
-        				</div>
-        			</div>
-        		</div>
-
-        		<script src="views/main.js">
-        			
-
-
-        		</script>
+<script src="views/main.js">
+	
+</script>
