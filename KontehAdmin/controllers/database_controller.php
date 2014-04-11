@@ -43,8 +43,11 @@ class DatabaseController{
 	
 	public function getWinnerData($id = false, $sortTask = false){
 		
-		if($id == true) $queryPart = " where c.candidate_id = ? ";
-		else $queryPart = " where c.candidate_id in (select candidate_id from progresslog where task_id = 7) ";
+		if($id == true) {
+			$queryPart = " where c.candidate_id = ? ";
+		} else {
+			$queryPart = " where c.candidate_id in (select candidate_id from progresslog where task_id = 7) ";
+		}
 		
 		$result = "";
 		$sql = "select c.candidate_id, c.firstname, c.lastname, c.email, FROM_UNIXTIME(p.timestamp) as timestamp, p.task_id, t.name
